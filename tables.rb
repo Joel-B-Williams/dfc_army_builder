@@ -4,13 +4,12 @@ module Tables
 
 	DB = SQLite3::Database.new("dfc_ships.db")
 	
-	def Tables.tables(db)
+	def self.tables(db)
 		create_tables = '
 		CREATE TABLE IF NOT EXISTS group_sizes(
 		id INTEGER PRIMARY KEY,
 		group_size TEXT
 		);
-
 
 		CREATE TABLE IF NOT EXISTS ships (
 		id INTEGER PRIMARY KEY,
@@ -53,10 +52,12 @@ module Tables
 		group3_id INTEGER REFERENCES groups(id),
 		points INTEGER
 		);'
+
 		db.execute_batch(create_tables)
+
 	end
 
-	def Tables.populate_group_sizes(db)
+	def self.populate_group_sizes(db)
 		sizes = ["1", "1-2", "1-3", "1-4", "2-3", "2-4", "2-6"]
 		add_group_size = 'INSERT INTO group_sizes (group_size) VALUES (?)'
 		if db.execute('SELECT COUNT (*) FROM group_sizes')[0][0] == 0
@@ -64,7 +65,7 @@ module Tables
 		end
 	end
 
-	def Tables.populate_battlegroup_types(db)
+	def self.populate_battlegroup_types(db)
 		pathfinder = ["Pathfinder", "1-3", "0-1", nil, nil]
 		line = ["Line", "0-2", "1-3", nil, nil]
 		vanguard = ["Vanguard", "0-1", "0-1", "1-2", nil]

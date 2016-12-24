@@ -3,6 +3,7 @@ require 'sqlite3'
 
 db = Tables::DB
 
+#class methods -> self.method_name, called by Class.method_name, deal with all instances of class
 class Battlegroup
 
 	def initialize(name, type, group1_name, group2_name, group3_name, db)
