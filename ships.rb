@@ -1,5 +1,7 @@
 require_relative 'roster'
 require_relative 'tables'
+require_relative 'groups'
+require_relative 'battlegroups'
 require 'sqlite3'
 
 db = Tables::DB
@@ -45,6 +47,12 @@ end
 
 Tables.populate_group_sizes(db)
 Tables.populate_battlegroup_types(db)
+
 # Conditional on choosing UCM as faction
 ucm_ships = create_ships(Roster::UCM_ROSTER, db)
 
+# Conditional on creating/saving groups
+group = Group.new("Beazlebub", "Tokyo", 1, db)
+group.save_group(db)
+group = Group.new("Red Squadron", "Toulon", 4, db)
+group.save_group(db)
