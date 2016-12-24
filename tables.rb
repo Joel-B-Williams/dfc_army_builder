@@ -31,7 +31,8 @@ module Tables
 		id INTEGER PRIMARY KEY,
 		name TEXT,
 		ship_id INTEGER REFERENCES ship(id),
-		number INTEGER
+		number INTEGER,
+		points INTEGER
 		);
 
 		CREATE TABLE IF NOT EXISTS battlegroup_types(
@@ -41,6 +42,16 @@ module Tables
 		medium TEXT,
 		heavy TEXT,
 		super_heavy TEXT
+		);
+
+		CREATE TABLE IF NOT EXISTS battlegroups(
+		id INTEGER PRIMARY KEY,
+		name TEXT,
+		type INTEGER REFERENCES battlegroup_types(id),
+		group1_id INTEGER REFERENCES groups(id),
+		group2_id INTEGER REFERENCES groups(id),
+		group3_id INTEGER REFERENCES groups(id),
+		points INTEGER
 		);'
 		db.execute_batch(create_tables)
 	end

@@ -3,7 +3,7 @@ require_relative 'tables'
 require 'sqlite3'
 
 db = Tables::DB
-Tables.tables(db)
+Tables.tables(db) #move to driver code I think
 
 class Ship
 
