@@ -56,3 +56,6 @@ group = Group.new("Beazlebub", "Tokyo", 1, db)
 group.save_group(db)
 group = Group.new("Red Squadron", "Toulon", 4, db)
 group.save_group(db)
+
+battlegroup = Battlegroup.new("Omega", "Vanguard", "Beazlebub", "Red Squadron", "Red Squadron", db)
+battlegroup.save_battlegroup(db)
