@@ -1,5 +1,5 @@
 module Roster
-		
+
 		# --- CURRENT UCM SHIPS ---
 
 #[name, scan, signature, thrust, hull, armor, point_defense, group_size_id, tonnage, special, points]
@@ -13,7 +13,7 @@ module Roster
 	rio = ["Rio", 6, 6, 8, 10, "3+", 5, 2, "M", nil, 105]
 	berlin = ["Berlin", 6, 6, 8, 10, "3+", 5, 2, "M", nil, 105]
 	madrid = ["Madrid", 6, 6, 8, 10, "3+", 5, 2, "M", nil, 79]
-	seattle = ["Seattle", 6, 6, 8, 10, "3+", 1, "M", "Launch", 132]
+	seattle = ["Seattle", 6, 6, 8, 10, "3+", 5, 1, "M", "Launch", 132]
 	osaka = ["Osaka", 6, 6, 10, 8, "4+", 5, 5, "M", nil, 86]
 	new_cairo = ["New Cairo", 6, 6, 10, 8, "4+", 5, 5, "M", nil, 88]
 	san_francisco = ["San Fransisco", 6, 6, 8, 10, "3+", 5, 1, "M", "Launch", 111]

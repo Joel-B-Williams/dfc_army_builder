@@ -30,8 +30,6 @@ class Ship
 		INSERT INTO ships (name, scan, signature, thrust, hull, armor, point_defense, group_sizes_id, tonnage, special, points) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
 			@db.execute(populate_ships, [@name, @scan, @signature, @thrust, @hull, @armor, @point_defense, @group_size, @tonnage, @special, @points])
 	end
-
-
 end
 
 # Move to driver code
@@ -46,5 +44,7 @@ end
 	end
 
 Tables.populate_group_sizes(db)
+Tables.populate_battlegroup_types(db)
 # Conditional on choosing UCM as faction
 ucm_ships = create_ships(Roster::UCM_ROSTER, db)
+
