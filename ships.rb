@@ -1,25 +1,8 @@
 require_relative 'roster'
+require_relative 'tables'
 require 'sqlite3'
-db = SQLite3::Database.new("dfc_ships.db")
 
-#clean up into module or class?
-create_tables = '
-CREATE TABLE IF NOT EXISTS ships (
-id INTEGER PRIMARY KEY,
-name TEXT,
-scan INTEGER,
-signature INTEGER,
-thrust INTEGER,
-hull INTEGER,
-armor TEXT,
-point_defense INTEGER,
-group_size INTEGER,
-tonnage TEXT,
-special TEXT,
-points INTEGER
-);'
-
-db.execute(create_tables)
+Tables.tables(Tables::DB)
 
 class Ship
 
@@ -35,7 +18,7 @@ class Ship
 		@tonnage = faction_roster[roster_index][8]
 		@special = faction_roster[roster_index][9]
 		@points = faction_roster[roster_index][10]
-		@db = SQLite3::Database.new("dfc_ships.db")
+		@db = Tables::DB
 		save
 	end
 
