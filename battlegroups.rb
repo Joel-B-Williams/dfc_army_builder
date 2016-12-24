@@ -41,6 +41,38 @@ class Battlegroup
 		db.execute(set_id, [find_group_id(@group3_name, db), @name]) if @group3_name != nil
 	end
 
+# == CALCULATE AND ADD POINTS TO BATTLEGROUPS TABLE ==
+	
+	#Find points value of each group
+	#Group1
+	def find_points_group1(db)
+		find_points = 'SELECT points FROM groups WHERE id = ?'
+		points = db.execute(find_points, [find_group_id(@group1_name, db)])[0][0] if @group1_name != nil
+	end 
+
+	#Group2
+	def find_points_group2(db)
+		find_points = 'SELECT points FROM groups WHERE id = ?'
+		points = db.execute(find_points, [find_group_id(@group2_name, db)])[0][0] if @group2_name != nil
+	end 
+
+	#Group3
+	def find_points_group3(db)
+		find_points = 'SELECT points FROM groups WHERE id = ?'
+		points = db.execute(find_points, [find_group_id(@group3_name, db)])[0][0] if @group3_name != nil
+	end 
+
+	#Calculate points cost of battlegroup using sum of all group costs
+	def calc_points(db)
+		points = ( find_points_group1(db) + find_points_group2(db) + find_points_group3(db) )
+	end
+
+	#Update battlegroups table to include total points cost
+	def set_points(db)
+		set_points = 'UPDATE battlegroups SET points = ? WHERE name = ?'
+		db.execute(set_points, [calc_points(db), @name])
+	end
+
 # == SAVE BATTLEGROUP TO BATTLEGROUPS TABLE ==
 
 	#Initially save name to battlegroups table, then call other necessary functions
@@ -50,5 +82,6 @@ class Battlegroup
 		set_id_group1(db)
 		set_id_group2(db)
 		set_id_group3(db)
+		set_points(db)
 	end
 end
