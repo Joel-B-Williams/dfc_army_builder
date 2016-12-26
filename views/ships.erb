@@ -8,10 +8,38 @@
 		<a href="/">Home</a>
 	</nav>
 	<section>
-		<p>Behold the power of your Fleet</p>
-		<p><%= "Faction: #{@faction}" %></p>
-		<p>Choose wisely!</p>	
-		<p><%= @fleet %></p>
+		<p>Behold the power of your Fleet!!</p>
+		<% @fleet.each do |ship| %>
+			<table>
+				<th>
+					<td colspan="6"><%=ship[0]%></td>
+					<td colspan="3">Points: <%=ship[10]%></td>
+				</th>
+				<tr>
+					<td>Scan</td>
+					<td>Signature</td>
+					<td>Thrust</td>
+					<td>Hull</td>
+					<td>Armor</td>
+					<td>PD</td>
+					<td>G</td>
+					<td>T</td>
+					<td>Special</td>
+				</tr>
+				<tr>
+					<td><%=ship[1]%></td>
+					<td><%=ship[2]%></td>
+					<td><%=ship[3]%></td>
+					<td><%=ship[4]%></td>
+					<td><%=ship[5]%></td>
+					<td><%=ship[6]%></td>
+					<td><%=ship[7]%></td>
+					<td><%=ship[8]%></td>
+					<td><%=ship[9]%></td>
+				</tr>
+			</table><br>
+			<%end%>
+		<!-- <p><%= @fleet %></p> -->
 	</section>
 </body>
 </html>

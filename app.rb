@@ -35,7 +35,7 @@ get '/ships' do
 	@faction = params[:faction]
 	@db = Tables::DB #way to declare for all views?
 	@fleet = db.execute('
-		SELECT * FROM ships
+		SELECT ships.name, ships.scan, ships.signature, ships.thrust, ships.hull, ships.armor, ships.point_defense, group_sizes.group_size, ships.tonnage, ships.special, ships.points FROM ships
 		JOIN group_sizes ON 
 		ships.group_sizes_id = group_sizes.id
 		WHERE faction = ?', [@faction])
