@@ -57,6 +57,7 @@ module Tables
 		CREATE TABLE IF NOT EXISTS fleets(
 		id INTEGER PRIMARY KEY,
 		name TEXT,
+		faction TEXT,
 		points_limit INTEGER,
 		battlegroups TEXT
 		);'

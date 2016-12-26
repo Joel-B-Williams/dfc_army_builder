@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Select Faction</title>
+</head>
+<body>
+	<p>Please select a faction.</p>
+	<select form="faction" name="faction" required>
+		<option value="" disabled selected="">-Select Faction-</option>
+		<option value="ucm">UCM</option>
+		<option value="scourge">Scourge</option>
+		<option value="phr">PHR</option>
+		<option value="shaltari">Shaltari</option>
+	</select>
+	<form action="/ships" method="get" id=faction>
+		<input type="submit"></input>
+	</form>
+</body>
+</html>

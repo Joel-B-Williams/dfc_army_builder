@@ -31,6 +31,10 @@ get '/' do
 	erb :home
 end
 
+get '/choose_faction' do
+	erb :choose_faction
+end
+
 get '/ships' do
 	faction = params[:faction]
 	@fleet = Ship.display_faction_ships(faction)

@@ -3,14 +3,19 @@ require 'sqlite3'
 
 class Fleet
 	
-	def initialize(name, points_limit, db)
+	def initialize(name, faction, points_limit, db)
 		@name = name
+		@faction = faction
 		@points_limit = points_limit
 		@db = db
 		#push bg id into string, store in db, push to array later?
 		@battlegroups = ""
 	end
 
+
+# === DISPLAY METHODS ===
+
+# Overview of all saved battlegroups
 
 # === ADD BATTLEGROUP TO FLEET ===
 
@@ -28,8 +33,8 @@ class Fleet
 # === SAVE FLEET TO FLEET TABLE ===
 
 	def save_fleet
-		save = 'INSERT INTO fleets (name, points_limit, battlegroups) VALUES (?,?,?)'
-		@db.execute(save_fleet, [@name, @points_limit, @battlegroups])
+		save = 'INSERT INTO fleets (name, faction, points_limit, battlegroups) VALUES (?,?,?,?)'
+		@db.execute(save_fleet, [@name, @faction, @points_limit, @battlegroups])
 	end
 
 end
