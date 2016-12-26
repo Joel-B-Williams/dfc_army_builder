@@ -23,7 +23,8 @@ module Tables
 		group_sizes_id INTEGER REFERENCES group_sizes(id),
 		tonnage TEXT,
 		special TEXT,
-		points INTEGER
+		points INTEGER,
+		faction TEXT
 		);
 
 		CREATE TABLE IF NOT EXISTS groups(
