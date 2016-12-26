@@ -2,9 +2,9 @@ require_relative 'tables'
 
 require 'sqlite3'
 
-db = Tables::DB
-
 class Ship
+
+	@@db = Tables::DB
 
 	def initialize(roster, roster_index, db)
 		@name = roster[roster_index][0]
@@ -21,6 +21,18 @@ class Ship
 		@faction = roster[roster_index][11]
 		@db = db
 		save
+	end
+
+
+# == DISPLAY METHODS ==
+
+	def self.display_faction_ships(faction)
+		display_ships ='
+		SELECT ships.name, ships.scan, ships.signature, ships.thrust, ships.hull, ships.armor, ships.point_defense, group_sizes.group_size, ships.tonnage, ships.special, ships.points FROM ships
+		JOIN group_sizes ON 
+		ships.group_sizes_id = group_sizes.id
+		WHERE faction = ?'
+		@@db.execute(display_ships, [faction])
 	end
 
 # Method to inject into database

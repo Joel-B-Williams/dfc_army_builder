@@ -52,6 +52,13 @@ module Tables
 		group2_id INTEGER REFERENCES groups(id),
 		group3_id INTEGER REFERENCES groups(id),
 		points INTEGER
+		);
+
+		CREATE TABLE IF NOT EXISTS fleets(
+		id INTEGER PRIMARY KEY,
+		name TEXT,
+		points_limit INTEGER,
+		battlegroups TEXT
 		);'
 
 		db.execute_batch(create_tables)
