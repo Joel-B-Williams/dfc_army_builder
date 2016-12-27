@@ -28,7 +28,7 @@ class Ship
 
 	def self.display_faction_ships(faction)
 		display_ships ='
-		SELECT ships.name, ships.scan, ships.signature, ships.thrust, ships.hull, ships.armor, ships.point_defense, group_sizes.group_size, ships.tonnage, ships.special, ships.points FROM ships
+		SELECT name, scan, signature, thrust, hull, armor, point_defense, group_size, tonnage, special, points FROM ships
 		JOIN group_sizes ON 
 		ships.group_sizes_id = group_sizes.id
 		WHERE faction = ?'
@@ -37,7 +37,7 @@ class Ship
 
 	def self.display_by_tonnage(faction, tonnage)
 		display_ships ='
-		SELECT name, group_size, points, group_sizes_id FROM ships
+		SELECT name, group_size FROM ships
 		JOIN group_sizes ON 
 		ships.group_sizes_id = group_sizes.id
 		WHERE faction = ? AND tonnage = ?'

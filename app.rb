@@ -35,6 +35,12 @@ get '/' do
 	erb :home
 end
 
+get '/manage/groups' do
+	faction = session[:faction]
+	@groups = Group.display_groups(faction)
+	erb :manage_groups
+end
+
 post '/create/group' do
 	faction = session[:faction]
 	tonnage = params[:tonnage]
@@ -49,7 +55,13 @@ post '/groups/add' do
 	group_size = params[:group_size]
 	group = Group.new(group_name, faction, ship_name, group_size, db)
 	group.save_group
-	redirect '/'
+	redirect '/manage/groups'
+end
+
+post '/delete/group' do
+	group_name = params[:group_name]
+	Group.delete_group(group_name)
+	redirect '/manage/groups'
 end
 
 get '/create/battlegroup' do

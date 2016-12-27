@@ -14,16 +14,24 @@ class Group
 		@db = db
 	end
  
-# === CLASS DISPLAY METHODS ===
+# === CLASS METHODS ===
 
-	def display_groups(faction)
-		display_groups = 'SELECT groups.name, ship.name, groups.number, groups.points 
+	#Display groups
+	def self.display_groups(faction)
+		display_groups = 'SELECT groups.name, ships.name, tonnage, number, groups.points 
 		FROM groups JOIN ships ON groups.ship_id = ships.id 
 		WHERE groups.faction = ?'
 		@@db.execute(display_groups, [faction])
 	end
 
+	#Delete group from groups table
+	def self.delete_group(group_name)
+		delete_group = 'DELETE FROM groups WHERE name = ?'
+		@@db.execute(delete_group, [group_name])
+	end
+
  # == NOTE - change requiring group name to searching for ID instead?  
+
 # == FIND AND ADD ID OF SHIP TO GROUPS TABLE ==
 
   	#Find id of ship from ships table

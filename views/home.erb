@@ -14,24 +14,10 @@
 	<nav>
 		<a href="/faction/choose">Select Faction</a>
 		<a href="/ships">View Faction Roster</a>
-	<!-- 	<a href="/create/group">Create Group</a> -->
+		<a href="/manage/groups">Manage Groups</a>
 		<a href="/create/battlegroup">Create Battlegroup</a>
 		<a href="/create/fleet">Build Fleet</a>
 	</nav>
-	<!-- CREATE NEW GROUP -->
-	<section>
-		<label>Create New Group</label>
-		<select form="tonnage" name="tonnage" required>
-			<option disabled selected>-Select Tonnage-</option>
-			<option value="L">L</option>
-			<option value="M">M</option>
-			<option value="H'">H</option>
-			<option value="SH">SH</option>
-		</select>
-		<form id="tonnage" action="/create/group" method="post">
-			<input type="submit">
-		</form>
-	</section>
 	<section>
 		<% @fleets.each do |fleet| %>
 		<table>

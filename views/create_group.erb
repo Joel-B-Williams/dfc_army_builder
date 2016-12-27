@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Create Group</title>
+	<title>Add Group</title>
 </head>
 <body>
 	<p>Select a ship and group size</p>
+	<a href="/manage/groups">Return to group management</a>
+
 	<section>
+	<br>
 		<form id="new_group" action="/groups/add" method="POST">
 			<!-- Text input to name Group -->
 			<input type="text" name="group_name" value="" placeholder="Name of Group">
 			<!-- Selector with each ship name -->
 			<select name="ship_name">
 				<option disabled selected>-Select Ship-</option>
-				<%@category.each do |ship| %>
+				<% @category.each do |ship| %>
 					<option value="<%=ship[0]%>"><%=ship[0]%>: Group: <%=ship[1]%></option>
 				<%end%>
 			</select>
