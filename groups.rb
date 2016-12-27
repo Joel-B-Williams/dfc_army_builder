@@ -20,7 +20,8 @@ class Group
 	def self.display_groups(faction)
 		display_groups = 'SELECT groups.name, ships.name, tonnage, number, groups.points 
 		FROM groups JOIN ships ON groups.ship_id = ships.id 
-		WHERE groups.faction = ?'
+		WHERE groups.faction = ?
+		ORDER BY tonnage'
 		@@db.execute(display_groups, [faction])
 	end
 
