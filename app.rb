@@ -35,7 +35,10 @@ get '/' do
 	erb :home
 end
 
-get '/create/group' do
+post '/create/group' do
+	faction = session[:faction]
+	tonnage = params[:tonnage]
+	@category = Ship.display_by_tonnage(faction, tonnage)
 	erb :create_group
 end
 
