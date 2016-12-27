@@ -4,10 +4,35 @@
 	<title>Fleet Builder</title>
 </head>
 <body>
-	<p>This is the home page.  It needs stuff on it.</p>
-	<p>I need a button to build a new Fleet</p>
-	<p>Fleets need to be displayed</p>
-	<p>Fleets each need a button to delete them from DB</p>
-
+	<section>
+		<p>This is the home page.  It needs stuff on it.</p>
+		<p>I need a button to build a new Fleet</p>
+		<p>Fleets need to be displayed</p>
+		<p>Fleets each need a button to delete them from DB</p>
+		<p>With luck I can display the chosen faction here -> <%=@faction%></p>
+	</section>
+	<nav>
+		<a href="/faction/choose">Select Faction</a>
+		<a href="/ships">View Faction Roster</a>
+		<a href="/create/group">Create Group</a>
+		<a href="/create/battlegroup">Create Battlegroup</a>
+		<a href="/create/fleet">Build Fleet</a>
+	</nav>
+	<section>
+		<% @fleets.each do |fleet| %>
+		<table>
+			<thead>
+				<th>Fleet</th>
+				<th>Faction</th>
+				<th>Points</th>
+			</thead>
+			<tr>
+				<td><%=fleet[0]%></td>
+				<td><%=fleet[1]%></td>
+				<td><%=fleet[2]%></td>
+			</tr>
+		</table><br>
+		<% end %>
+	</section>
 </body>
 </html>

@@ -24,7 +24,7 @@ class Ship
 	end
 
 
-# == DISPLAY METHODS ==
+# ==  CLASS DISPLAY METHODS ==
 
 	def self.display_faction_ships(faction)
 		display_ships ='

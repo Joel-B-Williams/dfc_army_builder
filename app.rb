@@ -3,6 +3,7 @@ require_relative 'roster'
 require_relative 'ships'
 require_relative 'groups'
 require_relative 'battlegroups'
+require_relative 'fleet'
 
 require 'sqlite3'
 require 'sinatra'
@@ -26,17 +27,37 @@ Roster.create_ships(Roster::FULL_ROSTER, db) if db.execute('SELECT COUNT (*) FRO
 
 # battlegroup = Battlegroup.new("Omega", "Vanguard", "Beazlebub", "Red Squadron", "Red Squadron", db)
 # battlegroup.save_battlegroup(db)
+enable :sessions
 
 get '/' do
+	@fleets = Fleet.overview_display
+	@faction = session[:faction]
 	erb :home
 end
 
-get '/choose_faction' do
+get '/create/group' do
+	erb :create_group
+end
+
+get '/create/battlegroup' do
+	erb :create_battlegroup
+end
+
+get '/create/fleet' do
+	erb :create_fleet
+end
+
+get '/faction/choose' do
 	erb :choose_faction
 end
 
+post '/faction/store' do
+	session[:faction] = params[:faction]
+	redirect '/'
+end
+
 get '/ships' do
-	faction = params[:faction]
+	faction = session[:faction]
 	@fleet = Ship.display_faction_ships(faction)
 	erb :ships
 end

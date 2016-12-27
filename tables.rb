@@ -30,6 +30,7 @@ module Tables
 		CREATE TABLE IF NOT EXISTS groups(
 		id INTEGER PRIMARY KEY,
 		name TEXT,
+		faction TEXT,
 		ship_id INTEGER REFERENCES ship(id),
 		number INTEGER,
 		points INTEGER
@@ -47,6 +48,7 @@ module Tables
 		CREATE TABLE IF NOT EXISTS battlegroups(
 		id INTEGER PRIMARY KEY,
 		name TEXT,
+		faction TEXT,
 		type INTEGER REFERENCES battlegroup_types(id),
 		group1_id INTEGER REFERENCES groups(id),
 		group2_id INTEGER REFERENCES groups(id),

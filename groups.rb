@@ -3,14 +3,25 @@ require 'sqlite3'
 
 class Group
 
-	def initialize(name, ship_type, number, db)
+	@@db = Tables::DB
+
+	def initialize(name, faction, ship_type, number, db)
 		@name = name
+		@faction = faction
 		@ship_type = ship_type #needs to correlate to ship id in table
 		@number = number
 		@points = 0
 		@db = db
 	end
  
+# === CLASS DISPLAY METHODS ===
+
+	def display_groups(faction)
+		display_groups = 'SELECT groups.name, ship.name, groups.number, groups.points 
+		FROM groups JOIN ships ON groups.ship_id = ships.id 
+		WHERE groups.faction = ?'
+		@@db.execute(display_groups, [faction])
+	end
 
  # == NOTE - change requiring group name to searching for ID instead?  
 # == FIND AND ADD ID OF SHIP TO GROUPS TABLE ==
@@ -56,8 +67,8 @@ class Group
 
  	#Initially save name/number to groups table, then call other necessary functions
 	def save_group
-		save = 'INSERT INTO groups (name, number) VALUES (?,?)'
-		@db.execute(save, [@name, @number])
+		save = 'INSERT INTO groups (name, faction, number) VALUES (?,?,?)'
+		@db.execute(save, [@name, @faction, @number])
 		set_id
 		set_points
 	end

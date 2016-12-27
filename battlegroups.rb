@@ -4,8 +4,9 @@ require 'sqlite3'
 #class methods -> self.method_name, called by Class.method_name, deal with all instances of class
 class Battlegroup
 
-	def initialize(name, type, group1_name, group2_name, group3_name, db)
+	def initialize(name, faction, type, group1_name, group2_name, group3_name, db)
 		@name = name
+		@faction = faction
 		@type = type
 		@group1_name = group1_name
 		@group2_name = group2_name
@@ -76,8 +77,8 @@ class Battlegroup
 
 	#Initially save name to battlegroups table, then call other necessary functions
 	def save_battlegroup
-		save = 'INSERT INTO battlegroups (name, type) VALUES (?, ?)'
-		@db.execute(save, [@name, @type])
+		save = 'INSERT INTO battlegroups (name, faction, type) VALUES (?, ?, ?)'
+		@db.execute(save, [@name, @faction, @type])
 		set_id_group1
 		set_id_group2
 		set_id_group3
