@@ -42,6 +42,16 @@ post '/create/group' do
 	erb :create_group
 end
 
+post '/groups/add' do
+	group_name = params[:group_name]
+	faction = session[:faction]
+	ship_name = params[:ship_name]
+	group_size = params[:group_size]
+	group = Group.new(group_name, faction, ship_name, group_size, db)
+	group.save_group
+	redirect '/'
+end
+
 get '/create/battlegroup' do
 	erb :create_battlegroup
 end

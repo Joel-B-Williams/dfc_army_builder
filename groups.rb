@@ -35,7 +35,7 @@ class Group
  	#Update groups table to include id of ship
  	def set_id
 		set_id = 'UPDATE groups SET ship_id = ? WHERE name = ?'
-		@db.execute(set_id, [find_ship_id(db), @name])
+		@db.execute(set_id, [find_ship_id, @name])
  	end
 
 # == CALCULATE AND ADD POINTS TO GROUPS TABLE ==
@@ -43,7 +43,7 @@ class Group
  	#Find points value of single ship from ships table
  	def find_points
  		find_points = 'SELECT points FROM ships WHERE id = ?'
- 		points = @db.execute(find_points, [find_ship_id(db)])[0][0]
+ 		points = @db.execute(find_points, [find_ship_id])[0][0]
  	end
 
  	#Find number of ships in group from groups table

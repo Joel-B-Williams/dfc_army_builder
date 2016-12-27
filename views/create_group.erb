@@ -6,38 +6,26 @@
 <body>
 	<p>Select a ship and group size</p>
 	<section>
-		<%@category.each do |ship| %>
-			<table>
-				<thead>
-					<th colspan="6"><%=ship[0]%></th>
-					<th colspan="3">Points: <%=ship[10]%></th>
-				</thead>
-				<tr>
-					<td>Scan</td>
-					<td>Signature</td>
-					<td>Thrust</td>
-					<td>Hull</td>
-					<td>Armor</td>
-					<td>PD</td>
-					<td>G</td>
-					<td>T</td>
-					<td>Special</td>
-				</tr>
-				<tr>
-					<td><%=ship[1]%></td>
-					<td><%=ship[2]%></td>
-					<td><%=ship[3]%></td>
-					<td><%=ship[4]%></td>
-					<td><%=ship[5]%></td>
-					<td><%=ship[6]%></td>
-					<td><%=ship[7]%></td>
-					<td><%=ship[8]%></td>
-					<td><%=ship[9]%></td>
-				</tr>
-			</table><br>
-			<p>selector to choose number here</p>
-			<p>button to create group here</p>
-			<%end%>
+		<form id="new_group" action="/groups/add" method="POST">
+			<!-- Text input to name Group -->
+			<input type="text" name="group_name" value="" placeholder="Name of Group">
+			<!-- Selector with each ship name -->
+			<select name="ship_name">
+				<option disabled selected>-Select Ship-</option>
+				<%@category.each do |ship| %>
+					<option value="<%=ship[0]%>"><%=ship[0]%>: Group: <%=ship[1]%></option>
+				<%end%>
+			</select>
+			<select name="group_size">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</optoin>
+				<option value="5">5</option>
+				<option value="6">6</optoin>
+			</select>
+			<input type="submit">
+		</form>
 	</section>
 </body>
 </html>
