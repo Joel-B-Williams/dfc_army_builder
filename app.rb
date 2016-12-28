@@ -14,6 +14,7 @@ Tables.tables(db)
 Tables.populate_group_sizes(db)
 Tables.populate_battlegroup_types(db)
 Roster.create_ships(Roster::FULL_ROSTER, db) if db.execute('SELECT COUNT (*) FROM ships')[0][0] == 0
+Tables.default_group(db)
 # CURRENTLY WILL ADD TO TABLE EVERY TIME PROGRAM RUNS
 
 # # Conditional on choosing UCM as faction

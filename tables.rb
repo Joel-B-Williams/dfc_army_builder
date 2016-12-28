@@ -76,6 +76,11 @@ module Tables
 		end
 	end
 
+	def self.default_group(db)
+		set_default = 'INSERT INTO groups (name, faction, ship_id, number, points) VALUES ("none", "none", 1, 1, 0)'
+		db.execute(set_default)
+	end
+
 	def self.populate_battlegroup_types(db)
 		pathfinder = ["Pathfinder", "1-3", "0-1", nil, nil]
 		line = ["Line", "0-2", "1-3", nil, nil]
