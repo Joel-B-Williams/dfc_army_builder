@@ -18,14 +18,17 @@ class Battlegroup
 	end
 
 # === CLASS METHODS ===
-# if gX is null it doesn't pull -> find conditional query!!! ======================================
-# Options - coalesce/ifnull -> what ot return tha twon't break?
-# add "none" group to table??
+
 	def self.display_battlegroups(faction)
 		display_battlegroups = 'SELECT battlegroups.name, battlegroup_types.name, g1.name, g2.name, g3.name,   battlegroups.points FROM battlegroups JOIN groups AS g1 ON battlegroups.group1_id = g1.id JOIN groups AS g2 ON battlegroups.group2_id = g2.id JOIN groups AS g3 ON battlegroups.group3_id = g3.id JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id WHERE battlegroups.faction = ?'
 		@@db.execute(display_battlegroups, [faction])
 	end
 
+#Delete battlegroup from table
+	def self.delete_battlegroup(battlegroup_name)
+		delete_battlegroup = 'DELETE FROM battlegroups WHERE name = ?'
+		@@db.execute(delete_battlegroup, [battlegroup_name])
+	end
 # === INSTANCE METHODS ===
 
 	#Find id of group from groups table
@@ -99,8 +102,7 @@ class Battlegroup
 		@db.execute(set_points, [calc_points, @name])
 	end
 
-# == CREATE DEFAULT EMPTY GROUP FOR NON-FULL BATTLEGROUPS ==
-#================POTENTIAL ANSWER TO BG FORMATION PROBLEM ====================
+
 
 # == SAVE BATTLEGROUP TO BATTLEGROUPS TABLE ==
 
