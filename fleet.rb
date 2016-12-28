@@ -2,6 +2,8 @@ require_relative 'tables'
 require 'sqlite3'
 
 class Fleet
+
+	@@db = Tables::DB
 	
 	def initialize(name, faction, points_limit, db)
 		@name = name
@@ -16,6 +18,10 @@ class Fleet
 # === DISPLAY METHODS ===
 
 # Overview of all saved battlegroups
+	def self.overview_display
+		overview = 'SELECT name, faction, points_limit FROM fleets ORDER BY faction'
+		@@db.execute(overview)
+	end
 
 # === ADD BATTLEGROUP TO FLEET ===
 

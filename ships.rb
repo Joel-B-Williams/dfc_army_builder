@@ -24,19 +24,29 @@ class Ship
 	end
 
 
-# == DISPLAY METHODS ==
+# ==  CLASS METHODS ==
 
 	def self.display_faction_ships(faction)
 		display_ships ='
-		SELECT ships.name, ships.scan, ships.signature, ships.thrust, ships.hull, ships.armor, ships.point_defense, group_sizes.group_size, ships.tonnage, ships.special, ships.points FROM ships
+		SELECT name, scan, signature, thrust, hull, armor, point_defense, group_size, tonnage, special, points FROM ships
 		JOIN group_sizes ON 
 		ships.group_sizes_id = group_sizes.id
 		WHERE faction = ?'
 		@@db.execute(display_ships, [faction])
 	end
 
-# Method to inject into database
+	def self.display_by_tonnage(faction, tonnage)
+		display_ships ='
+		SELECT name, group_size FROM ships
+		JOIN group_sizes ON 
+		ships.group_sizes_id = group_sizes.id
+		WHERE faction = ? AND tonnage = ?'
+		@@db.execute(display_ships, [faction, tonnage])
+	end
 
+# == INSTANCE METHODS ==
+
+# Method to inject into database
 	def save
 		populate_ships = '
 		INSERT INTO ships (name, scan, signature, thrust, hull, armor, point_defense, group_sizes_id, tonnage, special, points, faction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);' 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Faction Groups</title>
+</head>
+<body>
+	<nav>
+		<a href="/">Home</a>
+	</nav>
+	<!-- CREATE NEW GROUP -->
+	<section>
+		<label>Create New Group</label>
+		<form id="tonnage" action="/create/group" method="POST">
+			<select name="tonnage" required>
+				<option disabled selected>-Select Tonnage-</option>
+				<option value="L">L</option>
+				<option value="M">M</option>
+				<option value="H">H</option>
+				<option value="S">S</option>
+			</select>
+			<input type="submit">
+		</form>
+	</section>
+	<!-- View Existing Faction Groups -->
+	<section>
+
+		<% @groups.each do |group| %>
+			<br>
+			<table>
+				<thead>
+					<th colspan="2"><%=group[0]%></th>
+					<th>Points: <%=group[4]%></th>
+				</thead>
+				<tr>
+					<td>Ship Class</td>
+					<td>Tonnage</td>
+					<td>Group Size</td>
+				</tr>
+				<tr>
+					<td><%=group[1]%></td>
+					<td><%=group[2]%></td>
+					<td><%=group[3]%></td>
+				</tr>
+			</table>
+			<form action="/delete/group" method="POST">
+				<input type="hidden" name="group_name" value="<%=group[0]%>">
+				<input type="submit" value="Delete">
+			</form>
+		<% end %>		
+	</section>
+</body>
+</html>

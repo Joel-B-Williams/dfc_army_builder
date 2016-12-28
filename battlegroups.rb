@@ -4,8 +4,11 @@ require 'sqlite3'
 #class methods -> self.method_name, called by Class.method_name, deal with all instances of class
 class Battlegroup
 
-	def initialize(name, type, group1_name, group2_name, group3_name, db)
+	@@db = Tables::DB
+
+	def initialize(name, faction, type, group1_name, group2_name, group3_name, db)
 		@name = name
+		@faction = faction
 		@type = type
 		@group1_name = group1_name
 		@group2_name = group2_name
@@ -14,8 +17,17 @@ class Battlegroup
 		@db = db
 	end
 
-# == FIND AND ADD ID OF GROUP TO BATTLEGROUPS TABLE ==
-	
+# === CLASS METHODS ===
+# if gX is null it doesn't pull -> find conditional query!!! ======================================
+# Options - coalesce/ifnull -> what ot return tha twon't break?
+# add "none" group to table??
+	def self.display_battlegroups(faction)
+		display_battlegroups = 'SELECT battlegroups.name, battlegroup_types.name, battlegroups.points FROM battlegroups JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id  WHERE battlegroups.faction = ?'
+		@@db.execute(display_battlegroups, [faction])
+	end
+
+# === INSTANCE METHODS ===
+
 	#Find id of group from groups table
 	def find_group_id(group_name)
 		find_group_id = 'SELECT id FROM groups WHERE name = ?'
@@ -25,19 +37,19 @@ class Battlegroup
 	#Update battlegroups table to include id of group1
 	def set_id_group1
 		set_id = 'UPDATE battlegroups SET group1_id = ? WHERE name = ?'
-		@db.execute(set_id, [find_group_id(@group1_name, db), @name]) if @group1_name != nil
+		@db.execute(set_id, [find_group_id(@group1_name), @name]) if @group1_name != nil
 	end
 
 	#Update battlegroups table to include id of group2
 	def set_id_group2
 		set_id = 'UPDATE battlegroups SET group2_id = ? WHERE name = ?'
-		@db.execute(set_id, [find_group_id(@group2_name, db), @name]) if @group2_name != nil
+		@db.execute(set_id, [find_group_id(@group2_name), @name]) if @group2_name != nil
 	end	
 
 	#Update battlegroups table to include id of group3
 	def set_id_group3
 		set_id = 'UPDATE battlegroups SET group3_id = ? WHERE name = ?'
-		@db.execute(set_id, [find_group_id(@group3_name, db), @name]) if @group3_name != nil
+		@db.execute(set_id, [find_group_id(@group3_name), @name]) if @group3_name != nil
 	end
 
 # == CALCULATE AND ADD POINTS TO BATTLEGROUPS TABLE ==
@@ -46,19 +58,34 @@ class Battlegroup
 	#Group1
 	def find_points_group1
 		find_points = 'SELECT points FROM groups WHERE id = ?'
-		points = @db.execute(find_points, [find_group_id(@group1_name, db)])[0][0] if @group1_name != nil
+		if @group1_name != nil
+			points = @db.execute(find_points, [find_group_id(@group1_name)])[0][0] 
+		else 
+			points = 0
+		end
+		points
 	end 
 
 	#Group2
 	def find_points_group2
 		find_points = 'SELECT points FROM groups WHERE id = ?'
-		points = @db.execute(find_points, [find_group_id(@group2_name, db)])[0][0] if @group2_name != nil
+		if @group2_name != nil
+			points = @db.execute(find_points, [find_group_id(@group2_name)])[0][0]
+		else
+			points = 0
+		end
+		points
 	end 
 
 	#Group3
 	def find_points_group3
 		find_points = 'SELECT points FROM groups WHERE id = ?'
-		points = @db.execute(find_points, [find_group_id(@group3_name, db)])[0][0] if @group3_name != nil
+		if @group3_name != nil
+			points = @db.execute(find_points, [find_group_id(@group3_name)])[0][0]
+		else
+		points = 0
+		end 
+		points
 	end 
 
 	#Calculate points cost of battlegroup using sum of all group costs
@@ -69,15 +96,18 @@ class Battlegroup
 	#Update battlegroups table to include total points cost
 	def set_points
 		set_points = 'UPDATE battlegroups SET points = ? WHERE name = ?'
-		@db.execute(set_points, [calc_points(db), @name])
+		@db.execute(set_points, [calc_points, @name])
 	end
+
+# == CREATE DEFAULT EMPTY GROUP FOR NON-FULL BATTLEGROUPS ==
+#================POTENTIAL ANSWER TO BG FORMATION PROBLEM ====================
 
 # == SAVE BATTLEGROUP TO BATTLEGROUPS TABLE ==
 
 	#Initially save name to battlegroups table, then call other necessary functions
 	def save_battlegroup
-		save = 'INSERT INTO battlegroups (name, type) VALUES (?, ?)'
-		@db.execute(save, [@name, @type])
+		save = 'INSERT INTO battlegroups (name, faction, type) VALUES (?, ?, ?)'
+		@db.execute(save, [@name, @faction, @type])
 		set_id_group1
 		set_id_group2
 		set_id_group3
