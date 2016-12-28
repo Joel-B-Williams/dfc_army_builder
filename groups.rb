@@ -15,8 +15,13 @@ class Group
 	end
  
 # === CLASS METHODS ===
+	#Display group overview (for BG select)
+	def self.display_by_name(faction)
+		display_groups = 'SELECT groups.name, ships.name, groups.points FROM groups JOIN ships ON groups.ship_id = ships.id WHERE groups.faction = ? ORDER BY ships.tonnage'
+		@@db.execute(display_groups, [faction])
+	end
 
-	#Display groups
+	#Display groups (full info)
 	def self.display_groups(faction)
 		display_groups = 'SELECT groups.name, ships.name, tonnage, number, groups.points 
 		FROM groups JOIN ships ON groups.ship_id = ships.id 

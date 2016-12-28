@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Faction Battlegroups</title>
+</head>
+<body>
+	<nav>
+		<a href="/">Home</a>
+	</nav>
+	<p>Behold yon mighty battlgroups!</p>
+	<section>
+		<label>Create New Battlegroup</label>
+		<form id="bg_type" action="/create/battlegroup" method="POST">
+			<select name="bg_type" required>
+				<option disabled selected>-Select Battlegroup Type</option>
+				<option value="4">Flag</option>
+				<option value="3">Vanguard</option>
+				<option value="2">Line</option>
+				<option value="1">Pathfinder</option>
+			</select>
+			<input type="submit">
+		</form>
+	</section>
+	<!-- Display faction bg's -->
+	<section>
+			<% @battlegroups.each do |battlegroup| %>
+				<table>
+					<thead>
+						<th><%=battlegroup[0]%></th>
+						<th>Points: <%=battlegroup[2]%></th>
+					</thead>
+					<tr>
+						<td>Battlegroup Type:</td>
+						<td><%=battlegroup[1]%></td>
+					</tr>
+				</table><br>
+			<% end %>
+	</section>
+</body>
+</html>

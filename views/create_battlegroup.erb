@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add Battlegroup</title>
+</head>
+<body>
+	<nav>
+		<a href="/manage/battlegroups">Back to Battlegroup Management</a>
+	</nav>
+	<section>
+		<form id="new_battlegroup" action="/battlegroups/add" method="POST">
+			<input type="text" name="bg_name" value="" placeholder="Name Your Battlegroup">
+			<!-- dropdown with existing groups as options -->
+			<select name="group1">
+				<option disabled selected>-Select Group-</option>
+				<% @groups.each do |group| %>
+				<option value="<%=group[0]%>"><em><%=group[0]%></em>: <%=group[1]%> -- <%=group[2]%></option>
+				<% end %>
+			</select>	
+			<select name="group2">
+				<option disabled selected>-Select Group-</option>
+				<% @groups.each do |group| %>
+				<option value="<%=group[0]%>"><em><%=group[0]%></em>: <%=group[1]%> -- <%=group[2]%></option>
+				<% end %>
+			</select>	
+			<select name="group3">
+				<option disabled selected>-Select Group-</option>
+				<% @groups.each do |group| %>
+				<option value="<%=group[0]%>"><em><%=group[0]%></em>: <%=group[1]%> -- <%=group[2]%></option>
+				<% end %>
+			</select>		
+			<input type="submit">	
+		</form>
+	</section>
+</body>
+</html>

@@ -29,12 +29,31 @@ Roster.create_ships(Roster::FULL_ROSTER, db) if db.execute('SELECT COUNT (*) FRO
 # battlegroup.save_battlegroup(db)
 enable :sessions
 
+# Home View
 get '/' do
 	@fleets = Fleet.overview_display
 	@faction = session[:faction]
 	erb :home
 end
 
+# Faction Management Views
+get '/faction/choose' do
+	erb :choose_faction
+end
+
+post '/faction/store' do
+	session[:faction] = params[:faction]
+	redirect '/'
+end
+
+# Full Ship Roster - by faction
+get '/ships' do
+	faction = session[:faction]
+	@fleet = Ship.display_faction_ships(faction)
+	erb :ships
+end
+
+# Group Management Views
 get '/manage/groups' do
 	faction = session[:faction]
 	@groups = Group.display_groups(faction)
@@ -64,28 +83,37 @@ post '/delete/group' do
 	redirect '/manage/groups'
 end
 
-get '/create/battlegroup' do
+# Battlegroup Management Views
+get '/manage/battlegroups' do
+	faction = session[:faction]
+	@battlegroups = Battlegroup.display_battlegroups(faction)
+	erb :manage_battlegroups
+end
+
+post '/create/battlegroup' do
+	faction = session[:faction]
+	session[:bg_type] = params[:bg_type]
+	@groups = Group.display_by_name(faction)
 	erb :create_battlegroup
 end
 
+post '/battlegroups/add' do
+	bg_name = params[:bg_name]
+	bg_type = session[:bg_type].to_i
+	faction = session[:faction]
+	group1 = params[:group1]
+	group2 = params[:group2]
+	group3 = params[:group3]
+	battlegroup = Battlegroup.new(bg_name, faction, bg_type, group1, group2, group3, db)
+	battlegroup.save_battlegroup
+	redirect '/manage/battlegroups'
+end
+
+post '/delete/battlegroup' do
+end
+
+# Fleet Management Views
 get '/create/fleet' do
 	erb :create_fleet
 end
 
-get '/faction/choose' do
-	erb :choose_faction
-end
-
-post '/faction/store' do
-	session[:faction] = params[:faction]
-	redirect '/'
-end
-
-get '/ships' do
-	faction = session[:faction]
-	@fleet = Ship.display_faction_ships(faction)
-	erb :ships
-end
-
-# get '/ships' do
-# end

@@ -11,7 +11,7 @@ module Tables
 		group_size TEXT
 		);
 
-		CREATE TABLE IF NOT EXISTS ships (
+		CREATE TABLE IF NOT EXISTS ships(
 		id INTEGER PRIMARY KEY,
 		name TEXT,
 		scan INTEGER,
@@ -31,7 +31,7 @@ module Tables
 		id INTEGER PRIMARY KEY,
 		name TEXT,
 		faction TEXT,
-		ship_id INTEGER REFERENCES ship(id),
+		ship_id INTEGER REFERENCES ships(id),
 		number INTEGER,
 		points INTEGER
 		);
