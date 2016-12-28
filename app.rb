@@ -111,6 +111,9 @@ post '/battlegroups/add' do
 end
 
 post '/delete/battlegroup' do
+	bg_name = params[:bg_name]
+	Battlegroup.delete_battlegroup(bg_name)
+	redirect '/manage/battlegroups'
 end
 
 # Fleet Management Views
