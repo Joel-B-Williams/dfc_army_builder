@@ -1,5 +1,8 @@
 module Roster
 
+		# --- DEFAULT NONE VALUE ---
+	default_ship = ["none", 0, 0, 0, 0, "0", 0, 1, "none", nil, 0, "none"]
+	
 		# --- CURRENT UCM SHIPS ---
 
 #[name, scan, signature, thrust, hull, armor, point_defense, group_size_id, tonnage, special, points]
@@ -24,7 +27,7 @@ module Roster
 	new_orleans = ["New Orleans", 6, 3, 10, 4, "4+", 3, 2, "L", "Atmospheric, Launch, Open", 32, "ucm"]
 	santiago = ["Santiago", 6, 2, 14, 2, "5+", 2, 3, "L", "Atmospheric, Outlier", 22, "ucm"]
 
-	FULL_ROSTER = [beijing, new_york, tokyo, atlantis, avalon, moscow, st_petersburg, rio, berlin, madrid, seattle, osaka, new_cairo, san_francisco, toulon, taipei, jakarta, lima, new_orleans, santiago]
+	FULL_ROSTER = [default_ship, beijing, new_york, tokyo, atlantis, avalon, moscow, st_petersburg, rio, berlin, madrid, seattle, osaka, new_cairo, san_francisco, toulon, taipei, jakarta, lima, new_orleans, santiago]
 
 	def self.create_ships(roster, db)
 		created_ships = []

@@ -22,7 +22,7 @@ class Battlegroup
 # Options - coalesce/ifnull -> what ot return tha twon't break?
 # add "none" group to table??
 	def self.display_battlegroups(faction)
-		display_battlegroups = 'SELECT battlegroups.name, battlegroup_types.name, battlegroups.points FROM battlegroups JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id  WHERE battlegroups.faction = ?'
+		display_battlegroups = 'SELECT battlegroups.name, battlegroup_types.name, g1.name, g2.name, g3.name,   battlegroups.points FROM battlegroups JOIN groups AS g1 ON battlegroups.group1_id = g1.id JOIN groups AS g2 ON battlegroups.group2_id = g2.id JOIN groups AS g3 ON battlegroups.group3_id = g3.id JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id WHERE battlegroups.faction = ?'
 		@@db.execute(display_battlegroups, [faction])
 	end
 

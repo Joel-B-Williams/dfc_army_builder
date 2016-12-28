@@ -26,12 +26,20 @@
 			<% @battlegroups.each do |battlegroup| %>
 				<table>
 					<thead>
-						<th><%=battlegroup[0]%></th>
-						<th>Points: <%=battlegroup[2]%></th>
+						<th colspan="3"><%=battlegroup[0]%></th>
+						<th>Points: <%=battlegroup[5]%></th>
 					</thead>
 					<tr>
 						<td>Battlegroup Type:</td>
+						<td>Group 1</td>
+						<td>Group 2</td>
+						<td>Group 3</td>
+					</tr>
+					<tr>
 						<td><%=battlegroup[1]%></td>
+						<td><%=battlegroup[2]%></td>
+						<td><%=battlegroup[3]%></td>
+						<td><%=battlegroup[4]%></td>
 					</tr>
 				</table><br>
 			<% end %>
