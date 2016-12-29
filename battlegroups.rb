@@ -29,6 +29,69 @@ class Battlegroup
 		delete_battlegroup = 'DELETE FROM battlegroups WHERE name = ?'
 		@@db.execute(delete_battlegroup, [battlegroup_name])
 	end
+
+# == UPDATE BATTLEGROUP ==
+
+#Update battlegroup name
+	def self.update_battlegroup(new_name, old_name)
+		update_battlegroup = 'UPDATE battlegroups SET name = ? WHERE name = ?'
+		@@db.execute(update_battlegroup, [new_name, old_name])
+	end	
+
+#Find group id from groups table
+	def self.update_group_id(group_name)
+		find_group_id = 'SELECT id FROM groups WHERE name = ?'
+		id = @@db.execute(find_group_id, [group_name])[0][0] 
+	end
+
+#Update battlegroups table to include id of group1
+	def self.update_id_group1(group_name, bg_name)
+		update_id = 'UPDATE battlegroups SET group1_id = ? WHERE name = ?'
+		@@db.execute(update_id, [self.update_group_id(group_name), bg_name])
+	end
+
+#Update battlegroups table to include id of group2
+	def self.update_id_group2(group_name, bg_name)
+		update_id = 'UPDATE battlegroups SET group2_id = ? WHERE name = ?'
+		@@db.execute(update_id, [self.update_group_id(group_name), bg_name])
+	end
+
+#Update battlegroups table to include id of group3
+def self.update_id_group3(group_name, bg_name)
+	update_id = 'UPDATE battlegroups SET group3_id = ? WHERE name = ?'
+	@@db.execute(update_id, [self.update_group_id(group_name), bg_name])
+end
+
+# == FIND AND CALCULATE NEW POINTS COST ==
+
+	#Find new points cost of group 1 by name
+	def self.find_points_group1(group_name)
+		find_points = 'SELECT points FROM groups WHERE name = ?'
+		points = @@db.execute(find_points, [group_name])[0][0]
+	end
+
+	#Find new points cost of group 2 by name
+	def self.find_points_group2(group_name)
+		find_points = 'SELECT points FROM groups WHERE name = ?'
+		points = @@db.execute(find_points, [group_name])[0][0]
+	end
+
+	#Find new points cost of group 3 by name
+	def self.find_points_group3(group_name)
+		find_points = 'SELECT points FROM groups WHERE name = ?'
+		points = @@db.execute(find_points, [group_name])[0][0]
+	end
+
+	#Calculate new points cost (by name)
+	def self.calc_new_points(group1, group2, group3)
+		points = ( self.find_points_group1(group1)+self.find_points_group2(group2)+self.find_points_group3(group3) )
+	end
+
+	#Update battlegroups table with new points cost (by name)
+	def self.update_points(bg_name, group1, group2, group3)
+		update_points = 'UPDATE battlegroups SET points = ? WHERE name = ?'
+		@@db.execute(update_points, [self.calc_new_points(group1, group2, group3), bg_name])
+	end
 # === INSTANCE METHODS ===
 
 	#Find id of group from groups table
@@ -40,19 +103,19 @@ class Battlegroup
 	#Update battlegroups table to include id of group1
 	def set_id_group1
 		set_id = 'UPDATE battlegroups SET group1_id = ? WHERE name = ?'
-		@db.execute(set_id, [find_group_id(@group1_name), @name]) if @group1_name != nil
+		@db.execute(set_id, [find_group_id(@group1_name), @name])
 	end
 
 	#Update battlegroups table to include id of group2
 	def set_id_group2
 		set_id = 'UPDATE battlegroups SET group2_id = ? WHERE name = ?'
-		@db.execute(set_id, [find_group_id(@group2_name), @name]) if @group2_name != nil
+		@db.execute(set_id, [find_group_id(@group2_name), @name])
 	end	
 
 	#Update battlegroups table to include id of group3
 	def set_id_group3
 		set_id = 'UPDATE battlegroups SET group3_id = ? WHERE name = ?'
-		@db.execute(set_id, [find_group_id(@group3_name), @name]) if @group3_name != nil
+		@db.execute(set_id, [find_group_id(@group3_name), @name])
 	end
 
 # == CALCULATE AND ADD POINTS TO BATTLEGROUPS TABLE ==
@@ -61,34 +124,19 @@ class Battlegroup
 	#Group1
 	def find_points_group1
 		find_points = 'SELECT points FROM groups WHERE id = ?'
-		if @group1_name != nil
-			points = @db.execute(find_points, [find_group_id(@group1_name)])[0][0] 
-		else 
-			points = 0
-		end
-		points
+		points = @db.execute(find_points, [find_group_id(@group1_name)])[0][0] 
 	end 
 
 	#Group2
 	def find_points_group2
 		find_points = 'SELECT points FROM groups WHERE id = ?'
-		if @group2_name != nil
-			points = @db.execute(find_points, [find_group_id(@group2_name)])[0][0]
-		else
-			points = 0
-		end
-		points
-	end 
+		points = @db.execute(find_points, [find_group_id(@group2_name)])[0][0]
+	end
 
 	#Group3
 	def find_points_group3
 		find_points = 'SELECT points FROM groups WHERE id = ?'
-		if @group3_name != nil
-			points = @db.execute(find_points, [find_group_id(@group3_name)])[0][0]
-		else
-		points = 0
-		end 
-		points
+		points = @db.execute(find_points, [find_group_id(@group3_name)])[0][0]
 	end 
 
 	#Calculate points cost of battlegroup using sum of all group costs

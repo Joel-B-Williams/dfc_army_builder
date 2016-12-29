@@ -16,7 +16,7 @@
 			<select name="ship_name">
 				<option disabled selected>-Select Ship-</option>
 				<% @category.each do |ship| %>
-					<option value="<%=ship[0]%>"><%=ship[0]%>: Group: <%=ship[1]%></option>
+					<option value="<%=ship[0]%>"><%=ship[0]%> -- Group: <%=ship[1]%></option>
 				<%end%>
 			</select>
 			<select name="group_size">
