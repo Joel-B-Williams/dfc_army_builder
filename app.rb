@@ -86,12 +86,13 @@ post '/groups/update' do
 end
 
 post '/groups/update/table' do
-	@current_name = session[:group_name]
-	@new_name = params[:new_group_name]
-	@ship_name	= params[:ship_name]
-	@group_size = params[:group_size]
-	Group.update_group(@new_name, @group_size, @current_name)
-	Group.update_id(@group_name, @ship_name)
+	old_name = session[:group_name]
+	new_name = params[:new_group_name]
+	ship_name	= params[:ship_name]
+	group_size = params[:group_size]
+	Group.update_group(new_name, group_size, old_name)
+	Group.update_id(new_name, ship_name)
+	Group.update_points(ship_name, new_name)
 	redirect '/groups/manage'
 end
 

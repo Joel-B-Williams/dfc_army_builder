@@ -56,6 +56,31 @@ class Group
 		@@db.execute(update_id, [self.id_to_update(ship_name), group_name])
  	end
 
+# == FIND AND CALCULATE NEW COST OF UPDATED GROUP ==
+	
+	#Find cost of ship from ships table
+	def self.find_points(ship_name)
+		find_points = 'SELECT points from ships WHERE name = ?'
+		points = @@db.execute(find_points, [ship_name])[0][0]
+	end
+
+	#Find number of ships in new group from groups table
+	def self.find_number(group_name)
+		find_number = 'SELECT number FROM groups WHERE name = ?'
+		number = @@db.execute(find_number, [group_name])[0][0]
+	end
+
+	#Calculate total points of new group using cost * number
+	def self.calc_points(ship_name, group_name)
+		points = ( self.find_points(ship_name) * self.find_number(group_name) )
+	end
+
+	#Update group table to include new cost at group name
+	def self.update_points(ship_name, group_name)
+		update_points = 'UPDATE groups SET points = ? WHERE name = ?'
+		@@db.execute(update_points, [self.calc_points(ship_name, group_name), group_name])
+	end
+
  # == NOTE - change requiring group name to searching for ID instead?  
 
 # == FIND AND ADD ID OF SHIP TO GROUPS TABLE ==
