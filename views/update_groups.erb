@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Update Faction Group</title>
+</head>
+<body>
+	<a href="/groups/manage">Return to Group Management</a>
+	<section>	
+		<form action="/groups/update/table" method="POST">
+			<!-- Text input to name Group -->
+			<input type="text" name="new_group_name" value="<%=@current_name%>">
+			<!-- Selector with each ship name -->
+			<select name="ship_name" >
+				<option selected value="<%=@ship_name%>"><%=@ship_name%></option>
+			</select>
+			<select name="group_size">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</optoin>
+				<option value="5">5</option>
+				<option value="6">6</optoin>
+			</select>
+			<input type="submit" value="Update">
+		</form>
+	</section>
+</body>
+</html>

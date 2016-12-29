@@ -10,7 +10,7 @@
 	<p>Behold yon mighty battlgroups!</p>
 	<section>
 		<label>Create New Battlegroup</label>
-		<form id="bg_type" action="/create/battlegroup" method="POST">
+		<form id="bg_type" action="/battlegroups/create" method="POST">
 			<select name="bg_type" required>
 				<option disabled selected>-Select Battlegroup Type</option>
 				<option value="4">Flag</option>
@@ -42,7 +42,7 @@
 						<td><%=battlegroup[4]%></td>
 					</tr>
 				</table>
-				<form action="/delete/battlegroup" method="POST">
+				<form action="/battlegroups/delete" method="POST">
 					<input type="hidden" name="bg_name" value="<%=battlegroup[0]%>">
 					<input type="submit" value="Delete">
 				</form><br>

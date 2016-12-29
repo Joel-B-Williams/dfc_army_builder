@@ -102,8 +102,6 @@ class Battlegroup
 		@db.execute(set_points, [calc_points, @name])
 	end
 
-
-
 # == SAVE BATTLEGROUP TO BATTLEGROUPS TABLE ==
 
 	#Initially save name to battlegroups table, then call other necessary functions
