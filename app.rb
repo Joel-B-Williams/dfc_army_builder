@@ -80,7 +80,7 @@ end
 
 post '/groups/update' do
 	session[:group_name] = params[:group_name]
-	@current_name = session[:group_name]
+	@old_name = session[:group_name]
 	@ship_name = params[:ship_name]
 	erb :update_groups
 end
@@ -119,7 +119,7 @@ end
 
 post '/battlegroups/add' do
 	bg_name = params[:bg_name]
-	bg_type = session[:bg_type].to_i
+	bg_type = session[:bg_type]
 	faction = session[:faction]
 	group1 = params[:group1]
 	group2 = params[:group2]
@@ -130,7 +130,29 @@ post '/battlegroups/add' do
 end
 
 post '/battlegroups/update' do
+	faction = session[:faction]
+	session[:bg_name] = params[:bg_name]
+	@old_name = session[:bg_name]
+	@bg_type = params[:bg_type]
+	@group1 = params[:group1]
+	@group2 = params[:group2]
+	@group3 = params[:group3]
+	@groups = Group.display_by_name(faction)
+	erb :update_battlegroups
+end
 
+post '/battlegroups/update/table' do
+	old_name = session[:bg_name]
+	new_name = params[:bg_name]
+	group1 = params[:group1]
+	group2 = params[:group2]
+	group3 = params[:group3]
+	Battlegroup.update_battlegroup(new_name, old_name)
+	Battlegroup.update_id_group1(group1, new_name)
+	Battlegroup.update_id_group2(group2, new_name)
+	Battlegroup.update_id_group3(group3, new_name)
+	Battlegroup.update_points(new_name, group1, group2, group3)
+	redirect '/battlegroups/manage'
 end
 
 post '/battlegroups/delete' do

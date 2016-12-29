@@ -5,8 +5,35 @@
 </head>
 <body>
 	<a href="/battlegroups/manage">Return to Battlegroup Management</a>
-	<form>	
-			<input type="text" name="bg_name" value="<%=@bg_name%>">
-	</form>
+	<form action="/battlegroups/update/table" method="POST">
+			<input type="text" name="bg_name" value="<%=@old_name%>">
+			<select name="bg_type">
+				<option value="<%@bg_type%>" selected><%=@bg_type%></option>
+			</select>
+			<!-- dropdown with existing groups as options -->
+			<select name="group1">
+				<option value="<%=@group1%>" selected><%=@group1%></option>
+				<% @groups.each do |group| %>
+				<option value="<%=group[0]%>"><em><%=group[0]%></em>: <%=group[1]%> -- <%=group[2]%></option>
+				<% end %>
+				<option value="none">-none-</option>
+			</select>	
+			<select name="group2">
+				<option value="<%=@group2%>" selected><%=@group2%></option>
+				<% @groups.each do |group| %>
+				<option value="<%=group[0]%>"><em><%=group[0]%></em>: <%=group[1]%> -- <%=group[2]%></option>
+				<% end %>
+				<option value="none">-none-</option>
+			</select>	
+			<select name="group3">
+				<option value="<%=@group3%>" selected><%=@group3%></option>
+				<% @groups.each do |group| %>
+				<option value="<%=group[0]%>"><em><%=group[0]%></em>: <%=group[1]%> -- <%=group[2]%></option>
+				<% end %>
+				<option value="none">-none-</option>
+			</select>		
+			<input type="submit">	
+		</form>
+	</section>
 </body>
 </html>

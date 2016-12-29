@@ -42,6 +42,14 @@
 						<td><%=battlegroup[4]%></td>
 					</tr>
 				</table>
+				<form action="/battlegroups/update" method="POST">
+					<input type="hidden" name="bg_name" value="<%=battlegroup[0]%>">
+					<input type="hidden" name="bg_type" value="<%=battlegroup[1]%>">
+					<input type="hidden" name="group1" value="<%=battlegroup[2]%>">
+					<input type="hidden" name="group2" value="<%=battlegroup[3]%>">
+					<input type="hidden" name="group3" value="<%=battlegroup[4]%>">
+					<input type="submit" value="Update">
+				</form>
 				<form action="/battlegroups/delete" method="POST">
 					<input type="hidden" name="bg_name" value="<%=battlegroup[0]%>">
 					<input type="submit" value="Delete">

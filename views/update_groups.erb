@@ -8,7 +8,7 @@
 	<section>	
 		<form action="/groups/update/table" method="POST">
 			<!-- Text input to name Group -->
-			<input type="text" name="new_group_name" value="<%=@current_name%>">
+			<input type="text" name="new_group_name" value="<%=@old_name%>">
 			<!-- Selector with each ship name -->
 			<select name="ship_name" >
 				<option selected value="<%=@ship_name%>"><%=@ship_name%></option>
