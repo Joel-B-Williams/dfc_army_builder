@@ -92,6 +92,12 @@ end
 		update_points = 'UPDATE battlegroups SET points = ? WHERE name = ?'
 		@@db.execute(update_points, [self.calc_new_points(group1, group2, group3), bg_name])
 	end
+
+	#Sync battlegroups with updated group points costs
+	def self.sync_battlegroups(battlegroups)
+		battlegroups.each {|battlegroup| Battlegroup.update_points(battlegroup[0], battlegroup[2], battlegroup[3], battlegroup[4])}
+	end
+
 # === INSTANCE METHODS ===
 
 	#Find id of group from groups table

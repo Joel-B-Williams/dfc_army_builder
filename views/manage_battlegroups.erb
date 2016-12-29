@@ -21,40 +21,48 @@
 			<input type="submit">
 		</form>
 	</section>
+	<br>
+	<!-- Sync All button -->
+	<section>
+		<form id="sync_bgs" action="/battlegroups/sync" method="POST">
+			<input type="submit" value="Sync Battlegroups">
+		</form>
+	</section>
+	<br>	
 	<!-- Display faction bg's -->
 	<section>
-			<% @battlegroups.each do |battlegroup| %>
-				<table>
-					<thead>
-						<th colspan="3"><%=battlegroup[0]%></th>
-						<th>Points: <%=battlegroup[5]%></th>
-					</thead>
-					<tr>
-						<td>Battlegroup Type:</td>
-						<td>Group 1</td>
-						<td>Group 2</td>
-						<td>Group 3</td>
-					</tr>
-					<tr>
-						<td><%=battlegroup[1]%></td>
-						<td><%=battlegroup[2]%></td>
-						<td><%=battlegroup[3]%></td>
-						<td><%=battlegroup[4]%></td>
-					</tr>
-				</table>
-				<form action="/battlegroups/update" method="POST">
-					<input type="hidden" name="bg_name" value="<%=battlegroup[0]%>">
-					<input type="hidden" name="bg_type" value="<%=battlegroup[1]%>">
-					<input type="hidden" name="group1" value="<%=battlegroup[2]%>">
-					<input type="hidden" name="group2" value="<%=battlegroup[3]%>">
-					<input type="hidden" name="group3" value="<%=battlegroup[4]%>">
-					<input type="submit" value="Update">
-				</form>
-				<form action="/battlegroups/delete" method="POST">
-					<input type="hidden" name="bg_name" value="<%=battlegroup[0]%>">
-					<input type="submit" value="Delete">
-				</form><br>
-			<% end %>
+		<% @battlegroups.each do |battlegroup| %>
+		<table>
+			<thead>
+				<th colspan="3"><%=battlegroup[0]%></th>
+				<th>Points: <%=battlegroup[5]%></th>
+			</thead>
+			<tr>
+				<td>Battlegroup Type:</td>
+				<td>Group 1</td>
+				<td>Group 2</td>
+				<td>Group 3</td>
+			</tr>
+			<tr>
+				<td><%=battlegroup[1]%></td>
+				<td><%=battlegroup[2]%></td>
+				<td><%=battlegroup[3]%></td>
+				<td><%=battlegroup[4]%></td>
+			</tr>
+		</table>
+		<form action="/battlegroups/update" method="POST">
+			<input type="hidden" name="bg_name" value="<%=battlegroup[0]%>">
+			<input type="hidden" name="bg_type" value="<%=battlegroup[1]%>">
+			<input type="hidden" name="group1" value="<%=battlegroup[2]%>">
+			<input type="hidden" name="group2" value="<%=battlegroup[3]%>">
+			<input type="hidden" name="group3" value="<%=battlegroup[4]%>">
+			<input type="submit" value="Update">
+		</form>
+		<form action="/battlegroups/delete" method="POST">
+			<input type="hidden" name="bg_name" value="<%=battlegroup[0]%>">
+			<input type="submit" value="Delete">
+		</form><br>
+	<% end %>
 	</section>
 </body>
 </html>
