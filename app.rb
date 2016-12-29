@@ -133,7 +133,7 @@ post '/battlegroups/update' do
 
 end
 
-post 'battlegroups/delete' do
+post '/battlegroups/delete' do
 	bg_name = params[:bg_name]
 	Battlegroup.delete_battlegroup(bg_name)
 	redirect '/battlegroups/manage'
