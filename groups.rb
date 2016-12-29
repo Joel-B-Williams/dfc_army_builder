@@ -36,6 +36,26 @@ class Group
 		@@db.execute(delete_group, [group_name])
 	end
 
+# == UPDATE EXISTING GROUP TO GROUPS TABLE ==
+
+	#Update table using group name
+	def self.update_group(new_name, number, old_name)
+		update_group = 'UPDATE groups SET name = ?, number = ? WHERE name = ?'
+		@@db.execute(update_group, [new_name, number, old_name])
+	end
+
+	#Find id of ship from ships table
+ 	def self.id_to_update(ship_name)
+		find_ship_id = 'SELECT id FROM ships WHERE name = ?'
+		id = @@db.execute(find_ship_id, [ship_name])[0][0]
+ 	end
+
+ 	#Update groups table to include id of ship
+ 	def self.update_id(group_name, ship_name)
+		update_id = 'UPDATE groups SET ship_id = ? WHERE name = ?'
+		@@db.execute(update_id, [self.id_to_update(ship_name), group_name])
+ 	end
+
  # == NOTE - change requiring group name to searching for ID instead?  
 
 # == FIND AND ADD ID OF SHIP TO GROUPS TABLE ==
@@ -76,6 +96,7 @@ class Group
  		set_points = 'UPDATE groups SET points = ? WHERE name = ?'
  		@db.execute(set_points, [calc_points, @name]) 
  	end
+
 
 # == SAVE GROUP TO GROUPS TABLE ==
 

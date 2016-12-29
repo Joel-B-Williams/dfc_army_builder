@@ -10,7 +10,7 @@
 	<!-- CREATE NEW GROUP -->
 	<section>
 		<label>Create New Group</label>
-		<form id="tonnage" action="/create/group" method="POST">
+		<form id="tonnage" action="/groups/create" method="POST">
 			<select name="tonnage" required>
 				<option disabled selected>-Select Tonnage-</option>
 				<option value="L">L</option>
@@ -42,8 +42,14 @@
 					<td><%=group[3]%></td>
 				</tr>
 			</table>
-			<form action="/delete/group" method="POST">
+			<form action="/groups/update" method="POST">		
 				<input type="hidden" name="group_name" value="<%=group[0]%>">
+				<input type="hidden" name="ship_name" value="<%=group[1]%>">
+				<input type="submit" value="Update">
+			</form>
+			<form action="/groups/delete" method="POST">
+				<input type="hidden" name="group_name" value="<%=group[0]%>">
+				<input type="hidden" name="ship_name" value="<%=group[1]%>">
 				<input type="submit" value="Delete">
 			</form>
 		<% end %>		

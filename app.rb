@@ -14,7 +14,7 @@ Tables.tables(db)
 Tables.populate_group_sizes(db)
 Tables.populate_battlegroup_types(db)
 Roster.create_ships(Roster::FULL_ROSTER, db) if db.execute('SELECT COUNT (*) FROM ships')[0][0] == 0
-Tables.default_group(db)
+Tables.default_group(db) if db.execute('SELECT COUNT (*) FROM groups')[0][0] == 0
 # CURRENTLY WILL ADD TO TABLE EVERY TIME PROGRAM RUNS
 
 # # Conditional on choosing UCM as faction
@@ -55,13 +55,13 @@ get '/ships' do
 end
 
 # Group Management Views
-get '/manage/groups' do
+get '/groups/manage' do
 	faction = session[:faction]
 	@groups = Group.display_groups(faction)
 	erb :manage_groups
 end
 
-post '/create/group' do
+post '/groups/create' do
 	faction = session[:faction]
 	tonnage = params[:tonnage]
 	@category = Ship.display_by_tonnage(faction, tonnage)
@@ -75,28 +75,46 @@ post '/groups/add' do
 	group_size = params[:group_size]
 	group = Group.new(group_name, faction, ship_name, group_size, db)
 	group.save_group
-	redirect '/manage/groups'
+	redirect '/groups/manage'
 end
 
-post '/delete/group' do
+post '/groups/update' do
+	session[:group_name] = params[:group_name]
+	@current_name = session[:group_name]
+	@ship_name = params[:ship_name]
+	erb :update_groups
+end
+
+post '/groups/update/table' do
+	@current_name = session[:group_name]
+	@new_name = params[:new_group_name]
+	@ship_name	= params[:ship_name]
+	@group_size = params[:group_size]
+	Group.update_group(@new_name, @group_size, @current_name)
+	Group.update_id(@group_name, @ship_name)
+	redirect '/groups/manage'
+end
+
+post '/groups/delete' do
 	group_name = params[:group_name]
 	Group.delete_group(group_name)
-	redirect '/manage/groups'
+	redirect '/groups/manage'
 end
 
 # Battlegroup Management Views
-get '/manage/battlegroups' do
+get '/battlegroups/manage' do
 	faction = session[:faction]
 	@battlegroups = Battlegroup.display_battlegroups(faction)
 	erb :manage_battlegroups
 end
 
-post '/create/battlegroup' do
+post '/battlegroups/create' do
 	faction = session[:faction]
 	session[:bg_type] = params[:bg_type]
 	@groups = Group.display_by_name(faction)
 	erb :create_battlegroup
 end
+
 
 post '/battlegroups/add' do
 	bg_name = params[:bg_name]
@@ -107,17 +125,21 @@ post '/battlegroups/add' do
 	group3 = params[:group3]
 	battlegroup = Battlegroup.new(bg_name, faction, bg_type, group1, group2, group3, db)
 	battlegroup.save_battlegroup
-	redirect '/manage/battlegroups'
+	redirect '/battlegroups/manage'
 end
 
-post '/delete/battlegroup' do
+post '/battlegroups/update' do
+
+end
+
+post 'battlegroups/delete' do
 	bg_name = params[:bg_name]
 	Battlegroup.delete_battlegroup(bg_name)
-	redirect '/manage/battlegroups'
+	redirect '/battlegroups/manage'
 end
 
 # Fleet Management Views
-get '/create/fleet' do
-	erb :create_fleet
+get '/fleets/manage' do
+	erb :manage_fleets
 end
 
