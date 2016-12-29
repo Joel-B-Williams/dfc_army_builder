@@ -155,6 +155,13 @@ post '/battlegroups/update/table' do
 	redirect '/battlegroups/manage'
 end
 
+post '/battlegroups/sync' do
+	faction = session[:faction]
+	battlegroups = Battlegroup.display_battlegroups(faction)
+	Battlegroup.sync_battlegroups(battlegroups)
+	redirect 'battlegroups/manage'
+end
+
 post '/battlegroups/delete' do
 	bg_name = params[:bg_name]
 	Battlegroup.delete_battlegroup(bg_name)
