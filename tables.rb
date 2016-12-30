@@ -15,7 +15,7 @@ module Tables
 		id INTEGER PRIMARY KEY,
 		name TEXT,
 		scan INTEGER,
-		signature INTEGER,
+		signature TEXT,
 		thrust INTEGER,
 		hull INTEGER,
 		armor TEXT,
