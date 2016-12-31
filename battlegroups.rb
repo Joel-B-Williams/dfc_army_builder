@@ -24,6 +24,12 @@ class Battlegroup
 		@@db.execute(display_battlegroups, [faction])
 	end
 
+#Find Battlegroup name from id
+	def self.find_bg_name(id)
+		find_name = 'SELECT name FROM battlegroups WHERE id = ?'
+		bg_name = @@db.execute(find_name, [id])[0][0]
+	end
+
 #Delete battlegroup from table
 	def self.delete_battlegroup(battlegroup_name)
 		delete_battlegroup = 'DELETE FROM battlegroups WHERE name = ?'
@@ -38,6 +44,7 @@ class Battlegroup
 		@@db.execute(update_battlegroup, [new_name, old_name])
 	end	
 
+#-------MOVE TO GROUPS CLASS --------------------
 #Find group id from groups table
 	def self.update_group_id(group_name)
 		find_group_id = 'SELECT id FROM groups WHERE name = ?'

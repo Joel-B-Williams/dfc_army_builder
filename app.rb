@@ -15,25 +15,13 @@ Tables.populate_group_sizes(db)
 Tables.populate_battlegroup_types(db)
 Roster.create_ships(Roster::FULL_ROSTER, db) if db.execute('SELECT COUNT (*) FROM ships')[0][0] == 0
 Tables.default_group(db) if db.execute('SELECT COUNT (*) FROM groups')[0][0] == 0
-# CURRENTLY WILL ADD TO TABLE EVERY TIME PROGRAM RUNS
 
-# # Conditional on choosing UCM as faction
-# ucm_ships = create_ships(Roster::UCM_ROSTER, db) if 
-
-# # Conditional on creating/saving groups
-# group = Group.new("Beazlebub", "Tokyo", 1, db)
-# group.save_group(db)
-# group = Group.new("Red Squadron", "Toulon", 4, db)
-# group.save_group(db)
-
-# battlegroup = Battlegroup.new("Omega", "Vanguard", "Beazlebub", "Red Squadron", "Red Squadron", db)
-# battlegroup.save_battlegroup(db)
 enable :sessions
 
 # Home View
 get '/' do
-	@fleets = Fleet.overview_display
-	@faction = session[:faction]
+	faction = session[:faction]
+	@fleets = Fleet.overview_display(faction)
 	erb :home
 end
 
@@ -116,7 +104,6 @@ post '/battlegroups/create' do
 	erb :create_battlegroup
 end
 
-
 post '/battlegroups/add' do
 	bg_name = params[:bg_name]
 	bg_type = session[:bg_type]
@@ -169,7 +156,31 @@ post '/battlegroups/delete' do
 end
 
 # Fleet Management Views
-get '/fleets/manage' do
-	erb :manage_fleets
+# Need at all?  Move all to home page????
+# get '/fleets/manage' do
+# 	faction = session[:faction]
+# 	@fleets = Fleet.overview_display(faction)
+# 	erb :manage_fleets
+# end
+
+# post '/fleets/create' do
+# 	faction = session[:faction]
+# 	@points_limit = session[:points_limit]
+# 	@battlegroups = Battlegroup.display_battlegroups(faction)
+# 	erb :create_fleet
+# end
+
+post '/fleets/add' do
+	fleet_name = params[:fleet_name]
+	faction = session[:faction]
+	points_limit = params[:points_limit]
+	fleet = Fleet.new(fleet_name, faction, points_limit, db)
+	fleet.save_fleet
+	redirect '/'
 end
 
+post '/fleets/delete' do
+	fleet_name = params[:fleet_name]
+	Fleet.delete_fleet(fleet_name)
+	redirect '/'
+end

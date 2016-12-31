@@ -23,7 +23,6 @@ class Ship
 		save
 	end
 
-
 # ==  CLASS METHODS ==
 
 	def self.display_faction_ships(faction)
