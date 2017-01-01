@@ -2,6 +2,8 @@ require_relative 'tables'
 require 'sqlite3'
 
 class Fleet
+	
+	attr_accessor :battlegroups
 
 	@@db = Tables::DB
 	
@@ -23,13 +25,58 @@ class Fleet
 		@@db.execute(overview, [faction])
 	end
 
+# Find points limit value of fleet by name
+	def self.find_fleet_points(fleet_name)
+		find_points = 'SELECT points_limit FROM fleets WHERE name = ?'
+		points = @@db.execute(find_points, [fleet_name])[0][0]	
+	end
+# === ADD BATTLEGROUP TO FLEET ===
+
+#Pull battlegroups from fleet table
+	def self.retreive_battlegroups(fleet_name)
+		retreive_battlegroups = 'SELECT battlegroups FROM fleets WHERE name = ?'
+		#initially nil, can't be pulled.  Start "none" bg?
+		bg_string = @@db.execute(retreive_battlegroups, [fleet_name])[0][0]
+	end
+
 #Convert @battlegroups string into array of battlegroup id's
-#-------- change to instance-method and call on initialize?????
-	def self.convert_bg_ids(battlegroups)
+	def self.convert_bg_ids(battlegroup_string)
 		bg_arr = []
-		bg_nums = battlegroups.split(".")
+		bg_nums = battlegroup_string.split(".")
 		bg_nums.each {|bg_id| bg_arr.push(bg_id.to_i)}
-		bg_nums
+		bg_arr
+	end
+
+#Add battlegroup id to array 
+	def self.add_bg_id(battlegroup_string, new_id)
+		current_bg = self.convert_bg_ids(battlegroup_string)
+		current_bg << new_id
+	end
+
+#Convert array to string 
+	def self.bg_to_s(battlegroup_array)
+		bg_string = ""
+		battlegroup_array.each {|bg| bg_string += "#{bg}."}
+		bg_string
+	end
+
+#Insert battlegroup string into fleets table
+	def self.update_battlegroups(fleet_name, battlegroup_string)
+		new_bgs = 'UPDATE fleets SET battlegroups = ? WHERE name = ?'
+		@@db.execute(new_bgs, [battlegroup_string, fleet_name])
+	end
+
+#Collect bg_id string from each active fleet
+#Convert it into an array
+#find bg names from each id in that array - Battlegroups.find_bg_name(id)
+#display info by name
+	def self.find_fleet_bgs(fleet)
+	bg_names = Fleet.convert_bg_ids(retreive_battlegroups(fleet)).map {|bg_id|
+			Battlegroup.find_bg_name(bg_id)}
+	end
+
+	def self.display_fleet_bgs(bg_names)
+		display = bg_names.map {|bg_name| Battlegroup.display_by_name(bg_name)}
 	end
 
 #Delete fleet from fleets table 
@@ -40,23 +87,11 @@ end
 
 # === INSTANCE METHODS === 
 
-# === ADD BATTLEGROUP TO FLEET ===
-
-# Select battlegroup by ID 
-	def find_battlegroup_id(battlegroup_name)
-		find_battlegroup_id = 'SELECT id FROM battlegroups WHERE name = ?'
-		id = @db.execute(find_battlegroup_id, [battlegroup_name])
-	end	
-
-# Add ID to @battlegroups (plus character break)
-	def add_battlegroup(id)
-		@battlegroups += "#{id}."
-	end
 
 # === SAVE FLEET TO FLEET TABLE ===
 
 	def save_fleet
-		save_fleet = 'INSERT INTO fleets (name, faction, points_limit) VALUES (?,?,?)'
+		save_fleet = 'INSERT INTO fleets (name, faction, points_limit, battlegroups) VALUES (?,?,?,"1.")'
 		@db.execute(save_fleet, [@name, @faction, @points_limit])
 	end
 

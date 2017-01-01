@@ -20,8 +20,13 @@ class Battlegroup
 # === CLASS METHODS ===
 
 	def self.display_battlegroups(faction)
-		display_battlegroups = 'SELECT battlegroups.name, battlegroup_types.name, g1.name, g2.name, g3.name,   battlegroups.points FROM battlegroups JOIN groups AS g1 ON battlegroups.group1_id = g1.id JOIN groups AS g2 ON battlegroups.group2_id = g2.id JOIN groups AS g3 ON battlegroups.group3_id = g3.id JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id WHERE battlegroups.faction = ?'
+		display_battlegroups = 'SELECT battlegroups.name, battlegroup_types.name, g1.name, g2.name, g3.name, battlegroups.points FROM battlegroups JOIN groups AS g1 ON battlegroups.group1_id = g1.id JOIN groups AS g2 ON battlegroups.group2_id = g2.id JOIN groups AS g3 ON battlegroups.group3_id = g3.id JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id WHERE battlegroups.faction = ? ORDER BY type'
 		@@db.execute(display_battlegroups, [faction])
+	end
+
+	def self.display_by_name(bg_name)
+		display_battlegroup = 'SELECT battlegroups.name, battlegroup_types.name, battlegroups.points FROM battlegroups JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id WHERE battlegroups.name = ?'
+		@@db.execute(display_battlegroup, [bg_name])
 	end
 
 #Find Battlegroup name from id
@@ -29,6 +34,12 @@ class Battlegroup
 		find_name = 'SELECT name FROM battlegroups WHERE id = ?'
 		bg_name = @@db.execute(find_name, [id])[0][0]
 	end
+
+# Select battlegroup by ID 
+	def self.find_bg_id(bg_name)
+		find_battlegroup_id = 'SELECT id FROM battlegroups WHERE name = ?'
+		id = @@db.execute(find_battlegroup_id, [bg_name])[0][0]
+	end	
 
 #Delete battlegroup from table
 	def self.delete_battlegroup(battlegroup_name)
@@ -45,7 +56,7 @@ class Battlegroup
 	end	
 
 #-------MOVE TO GROUPS CLASS --------------------
-#Find group id from groups table
+#Find group id from groups table?? alter below methods??
 	def self.update_group_id(group_name)
 		find_group_id = 'SELECT id FROM groups WHERE name = ?'
 		id = @@db.execute(find_group_id, [group_name])[0][0] 

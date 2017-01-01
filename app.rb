@@ -15,6 +15,7 @@ Tables.populate_group_sizes(db)
 Tables.populate_battlegroup_types(db)
 Roster.create_ships(Roster::FULL_ROSTER, db) if db.execute('SELECT COUNT (*) FROM ships')[0][0] == 0
 Tables.default_group(db) if db.execute('SELECT COUNT (*) FROM groups')[0][0] == 0
+Tables.default_battlegroup(db) if db.execute('SELECT COUNT (*) FROM battlegroups')[0][0] == 0
 
 enable :sessions
 
@@ -156,19 +157,6 @@ post '/battlegroups/delete' do
 end
 
 # Fleet Management Views
-# Need at all?  Move all to home page????
-# get '/fleets/manage' do
-# 	faction = session[:faction]
-# 	@fleets = Fleet.overview_display(faction)
-# 	erb :manage_fleets
-# end
-
-# post '/fleets/create' do
-# 	faction = session[:faction]
-# 	@points_limit = session[:points_limit]
-# 	@battlegroups = Battlegroup.display_battlegroups(faction)
-# 	erb :create_fleet
-# end
 
 post '/fleets/add' do
 	fleet_name = params[:fleet_name]
@@ -179,8 +167,53 @@ post '/fleets/add' do
 	redirect '/'
 end
 
+post '/fleets/add/battlegroup' do
+	fleet_name = params[:fleet_name]
+	bg_name = params[:bg_name]
+	#bg_points = params[:]??? add to calc points as you go??
+	#Gross... break down & use variables for readability?
+	new_bg_id_arr = Fleet.add_bg_id(Fleet.retreive_battlegroups(fleet_name), Battlegroup.find_bg_id(bg_name))
+	new_bg_str = Fleet.bg_to_s(new_bg_id_arr)
+	Fleet.update_battlegroups(fleet_name, new_bg_str)
+	redirect '/fleets/overview'
+end
+
+get '/fleets/overview' do
+	faction = session[:faction]
+	@fleet_name = session[:fleet_name]
+	@fleet_points = Fleet.find_fleet_points(@fleet_name)
+	@fleets = Fleet.overview_display(faction)
+	@battlegroups = Battlegroup.display_battlegroups(faction)
+	@fleet_bgs = Fleet.display_fleet_bgs(Fleet.find_fleet_bgs(@fleet_name))
+	erb :view_fleets
+end
+
+post '/fleets/overview' do
+	faction = session[:faction]
+	session[:fleet_name] = params[:fleet_name]
+	@fleet_name = session[:fleet_name]
+	@fleet_points = Fleet.find_fleet_points(@fleet_name)
+	@fleets = Fleet.overview_display(faction)
+	@battlegroups = Battlegroup.display_battlegroups(faction)
+	@fleet_bgs = Fleet.display_fleet_bgs(Fleet.find_fleet_bgs(@fleet_name))
+	erb :view_fleets
+end
+
 post '/fleets/delete' do
 	fleet_name = params[:fleet_name]
 	Fleet.delete_fleet(fleet_name)
 	redirect '/'
 end
+
+#------------------------------------#
+
+# post '/test' do
+# 	fleet_name = params[:fleet_name]
+# 	bg_name = params[:bg_name]
+# 	@retreived_battlegroups = Fleet.retreive_battlegroups(fleet_name)
+# 	@found_bg_ids = Battlegroup.find_bg_id(bg_name)
+# 	@new_bg_id_arr = Fleet.add_bg_id(@retreived_battlegroups, @found_bg_ids)
+# 	@new_bg_str = Fleet.bg_to_s(@new_bg_id_arr)
+# 	Fleet.update_battlegroups(fleet_name, @new_bg_str)
+# 	erb :test
+# end

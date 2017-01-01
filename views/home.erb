@@ -26,17 +26,23 @@
 		</form>
 	</section>
 	<section>
+	<!-- Display fleet basics here -->
 		<% @fleets.each do |fleet| %>
 		<table>
 			<thead>
-				<th>Fleet</th>
-				<th>Points</th>
+				<th colspan="2">Fleet</th>
+				<th colspan="2">Points</th>
 			</thead>
 			<tr>
-				<td><%=fleet[0]%></td>
-				<td>xxxx/<%=fleet[1]%></td>
+				<td colspan="2"><%=fleet[0]%></td>
+				<td colspan="2">xxxx/<%=fleet[1]%></td>
 			</tr>
-		</table><br>
+		</table>
+		<!-- View/Update/Delete Fleets -->
+		<form action="/fleets/overview" method="POST">
+			<input type="hidden" name="fleet_name" value="<%=fleet[0]%>">
+			<input type="submit" value="View Fleet">
+		</form>
 		<form action="/fleets/delete" method="POST">
 			<input type="hidden" name="fleet_name" value="<%=fleet[0]%>">
 			<input type="submit" value="Delete">
