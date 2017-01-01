@@ -199,6 +199,16 @@ post '/fleets/overview' do
 	erb :view_fleets
 end
 
+post '/fleets/delete/battlegroup' do
+	fleet_name = session[:fleet_name]
+	bg_name = params[:bg_name]
+	#refactor with variables
+	new_arr = Fleet.remove_bg_id(Fleet.convert_bg_ids(Fleet.retreive_battlegroups(fleet_name)), Battlegroup.find_bg_id(bg_name))
+	new_str = Fleet.bg_to_s(new_arr)
+	Fleet.update_battlegroups(fleet_name, new_str)
+	redirect '/fleets/overview'
+end
+
 post '/fleets/delete' do
 	fleet_name = params[:fleet_name]
 	Fleet.delete_fleet(fleet_name)
@@ -208,12 +218,9 @@ end
 #------------------------------------#
 
 # post '/test' do
-# 	fleet_name = params[:fleet_name]
+# 	fleet_name = session[:fleet_name]
 # 	bg_name = params[:bg_name]
-# 	@retreived_battlegroups = Fleet.retreive_battlegroups(fleet_name)
-# 	@found_bg_ids = Battlegroup.find_bg_id(bg_name)
-# 	@new_bg_id_arr = Fleet.add_bg_id(@retreived_battlegroups, @found_bg_ids)
-# 	@new_bg_str = Fleet.bg_to_s(@new_bg_id_arr)
-# 	Fleet.update_battlegroups(fleet_name, @new_bg_str)
+# 	@new_arr = Fleet.remove_bg_id(Fleet.convert_bg_ids(Fleet.retreive_battlegroups(fleet_name)), Battlegroup.find_bg_id(bg_name))
+# 	@new_str = Fleet.bg_to_s(@new_arr)
 # 	erb :test
 # end

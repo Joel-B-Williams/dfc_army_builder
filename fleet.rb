@@ -30,7 +30,7 @@ class Fleet
 		find_points = 'SELECT points_limit FROM fleets WHERE name = ?'
 		points = @@db.execute(find_points, [fleet_name])[0][0]	
 	end
-# === ADD BATTLEGROUP TO FLEET ===
+# === ADD/DELETE BATTLEGROUP TO FLEET ===
 
 #Pull battlegroups from fleet table
 	def self.retreive_battlegroups(fleet_name)
@@ -53,6 +53,17 @@ class Fleet
 		current_bg << new_id
 	end
 
+#Delete id from array
+	def self.remove_bg_id(battlegroup_array, id)
+		battlegroup_array.each_with_index do |bg_id, index|
+			if bg_id == id
+				battlegroup_array.delete_at(index)
+				break
+			end
+		end
+		battlegroup_array
+	end
+
 #Convert array to string 
 	def self.bg_to_s(battlegroup_array)
 		bg_string = ""
@@ -66,18 +77,19 @@ class Fleet
 		@@db.execute(new_bgs, [battlegroup_string, fleet_name])
 	end
 
-#Collect bg_id string from each active fleet
-#Convert it into an array
-#find bg names from each id in that array - Battlegroups.find_bg_name(id)
-#display info by name
+# === DISPLAY BATTLEGROUPS IN FLEET ===
+
+#Convert bg_id string into an array
 	def self.find_fleet_bgs(fleet)
 	bg_names = Fleet.convert_bg_ids(retreive_battlegroups(fleet)).map {|bg_id|
 			Battlegroup.find_bg_name(bg_id)}
 	end
 
+#Find bg_name from id and display by name
 	def self.display_fleet_bgs(bg_names)
 		display = bg_names.map {|bg_name| Battlegroup.display_by_name(bg_name)}
 	end
+
 
 #Delete fleet from fleets table 
 def self.delete_fleet(fleet_name)

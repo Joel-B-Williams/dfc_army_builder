@@ -26,14 +26,21 @@
 					<td>Type:</td>
 					<td>Points:</td>
 				</tr> -->
-				<tr>
-					<td colspan="2"><%=bg[0][0]%></td>
-					<td><%=bg[0][1]%></td>
-					<td><%=bg[0][2]%></td>
-				</tr>
+		<tr>
+			<td colspan="2"><%=bg[0][0]%></td>
+			<td><%=bg[0][1]%></td>
+			<td><%=bg[0][2]%></td>
+		</tr>
+	</table>
+	<section>
+	<!-- /fleets/delete/battlegroup -->
+		<form action="/fleets/delete/battlegroup" method="POST">
+			<input type="hidden" name="bg_name" value="<%=bg[0][0]%>">
+			<input type="submit" value="Delete">
+		</form>
+	</section>
 		<%end%>
 	<%end%>
-	</table>
 	</section>
 	<section>
 <!-- Add battlegroup to existing fleet -->
