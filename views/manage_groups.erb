@@ -42,6 +42,10 @@
 					<td><%=group[3]%></td>
 				</tr>
 			</table>
+			<form action="/ships/view" method="POST">
+				<input type="hidden" name="ship_name" value="<%=group[1]%>">
+				<input type="submit" value="Stats">
+			</form>
 			<form action="/groups/update" method="POST">		
 				<input type="hidden" name="group_name" value="<%=group[0]%>">
 				<input type="hidden" name="ship_name" value="<%=group[1]%>">

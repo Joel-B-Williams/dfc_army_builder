@@ -28,5 +28,102 @@
 			</tr>
 		</table>
 	</section>
+	<% if @ship1[0] != "none" %>
+	<section>
+	<table>
+		<thead>
+			<th colspan="6"><%=@ship1[0]%></th>
+			<th colspan="3">Points: <%=@ship1[10]%></th>
+		</thead>
+		<tr>
+			<td>Scan</td>
+			<td>Signature</td>
+			<td>Thrust</td>
+			<td>Hull</td>
+			<td>Armor</td>
+			<td>PD</td>
+			<td>G</td>
+			<td>T</td>
+			<td>Special</td>
+		</tr>
+		<tr>
+			<td><%=@ship1[1]%></td>
+			<td><%=@ship1[2]%></td>
+			<td><%=@ship1[3]%></td>
+			<td><%=@ship1[4]%></td>
+			<td><%=@ship1[5]%></td>
+			<td><%=@ship1[6]%></td>
+			<td><%=@ship1[7]%></td>
+			<td><%=@ship1[8]%></td>
+			<td><%=@ship1[9]%></td>
+		</tr>
+	</table>
+	</section>
+	<%end%>
+	<% if @ship2[0] != "none" %>
+	<section>
+			<table>
+		<thead>
+			<th colspan="6"><%=@ship2[0]%></th>
+			<th colspan="3">Points: <%=@ship2[10]%></th>
+		</thead>
+		<tr>
+			<td>Scan</td>
+			<td>Signature</td>
+			<td>Thrust</td>
+			<td>Hull</td>
+			<td>Armor</td>
+			<td>PD</td>
+			<td>G</td>
+			<td>T</td>
+			<td>Special</td>
+		</tr>
+		<tr>
+			<td><%=@ship2[1]%></td>
+			<td><%=@ship2[2]%></td>
+			<td><%=@ship2[3]%></td>
+			<td><%=@ship2[4]%></td>
+			<td><%=@ship2[5]%></td>
+			<td><%=@ship2[6]%></td>
+			<td><%=@ship2[7]%></td>
+			<td><%=@ship2[8]%></td>
+			<td><%=@ship2[9]%></td>
+		</tr>
+	</table>
+	</section>
+	<%end%>
+		</section>
+	<% if @ship3[0] != "none" %>
+	<section>
+			<table>
+		<thead>
+			<th colspan="6"><%=@ship3[0]%></th>
+			<th colspan="3">Points: <%=@ship3[10]%></th>
+		</thead>
+		<tr>
+			<td>Scan</td>
+			<td>Signature</td>
+			<td>Thrust</td>
+			<td>Hull</td>
+			<td>Armor</td>
+			<td>PD</td>
+			<td>G</td>
+			<td>T</td>
+			<td>Special</td>
+		</tr>
+		<tr>
+			<td><%=@ship3[1]%></td>
+			<td><%=@ship3[2]%></td>
+			<td><%=@ship3[3]%></td>
+			<td><%=@ship3[4]%></td>
+			<td><%=@ship3[5]%></td>
+			<td><%=@ship3[6]%></td>
+			<td><%=@ship3[7]%></td>
+			<td><%=@ship3[8]%></td>
+			<td><%=@ship3[9]%></td>
+		</tr>
+	</table>
+	</section>
+	<%end%>
 </body>
 </html>

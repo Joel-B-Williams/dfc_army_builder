@@ -43,6 +43,14 @@ class Ship
 		@@db.execute(display_ships, [faction, tonnage])
 	end
 
+	def self.display_ship_stats(ship_name)
+		display_ship = 'SELECT name, scan, signature, thrust, hull, armor, point_defense, group_size, tonnage, special, points FROM ships
+		JOIN group_sizes ON 
+		ships.group_sizes_id = group_sizes.id
+		WHERE name = ?'
+		ship = @@db.execute(display_ship, [ship_name])[0]
+	end
+
 # == INSTANCE METHODS ==
 
 # Method to inject into database
