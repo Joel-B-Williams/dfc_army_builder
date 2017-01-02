@@ -19,11 +19,19 @@ class Battlegroup
 
 # === CLASS METHODS ===
 
+#Select all battlegroups & info from battlegroups table
 	def self.display_battlegroups(faction)
 		display_battlegroups = 'SELECT battlegroups.name, battlegroup_types.name, g1.name, g2.name, g3.name, battlegroups.points FROM battlegroups JOIN groups AS g1 ON battlegroups.group1_id = g1.id JOIN groups AS g2 ON battlegroups.group2_id = g2.id JOIN groups AS g3 ON battlegroups.group3_id = g3.id JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id WHERE battlegroups.faction = ? ORDER BY type'
 		@@db.execute(display_battlegroups, [faction])
 	end
 
+#Select ONE battlegroup & info from battlegroups table by name
+	def self.display_battlegroup(bg_name)
+		display_battlegroups = 'SELECT battlegroups.name, battlegroup_types.name, g1.name, g2.name, g3.name, battlegroups.points FROM battlegroups JOIN groups AS g1 ON battlegroups.group1_id = g1.id JOIN groups AS g2 ON battlegroups.group2_id = g2.id JOIN groups AS g3 ON battlegroups.group3_id = g3.id JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id WHERE battlegroups.name = ?'
+		bg = @@db.execute(display_battlegroups, [bg_name])[0]
+	end
+
+#Select one battlegroup by name & overview info
 	def self.display_by_name(bg_name)
 		display_battlegroup = 'SELECT battlegroups.name, battlegroup_types.name, battlegroups.points FROM battlegroups JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id WHERE battlegroups.name = ?'
 		@@db.execute(display_battlegroup, [bg_name])
@@ -39,7 +47,13 @@ class Battlegroup
 	def self.find_bg_id(bg_name)
 		find_battlegroup_id = 'SELECT id FROM battlegroups WHERE name = ?'
 		id = @@db.execute(find_battlegroup_id, [bg_name])[0][0]
-	end	
+	end
+
+# Find Battlegroup points cost by name
+	def self.find_bg_points(bg_name)
+		find_points = 'SELECT points FROM battlegroups WHERE name = ?'
+		bg_points = @@db.execute(find_points, [bg_name])[0][0]
+	end
 
 #Delete battlegroup from table
 	def self.delete_battlegroup(battlegroup_name)

@@ -117,6 +117,12 @@ post '/battlegroups/add' do
 	redirect '/battlegroups/manage'
 end
 
+post '/battlegroups/overview' do
+	bg_name = params[:bg_name]
+	@bg = Battlegroup.display_battlegroup(bg_name)
+	erb :view_battlegroup
+end
+
 post '/battlegroups/update' do
 	faction = session[:faction]
 	session[:bg_name] = params[:bg_name]
@@ -175,6 +181,7 @@ post '/fleets/add/battlegroup' do
 	new_bg_id_arr = Fleet.add_bg_id(Fleet.retreive_battlegroups(fleet_name), Battlegroup.find_bg_id(bg_name))
 	new_bg_str = Fleet.bg_to_s(new_bg_id_arr)
 	Fleet.update_battlegroups(fleet_name, new_bg_str)
+	Fleet.update_current_points(fleet_name, Fleet.add_bg_points(fleet_name, bg_name))
 	redirect '/fleets/overview'
 end
 
@@ -182,7 +189,7 @@ get '/fleets/overview' do
 	faction = session[:faction]
 	@fleet_name = session[:fleet_name]
 	@fleet_points = Fleet.find_fleet_points(@fleet_name)
-	@fleets = Fleet.overview_display(faction)
+	@current_points = Fleet.find_current_points(@fleet_name)
 	@battlegroups = Battlegroup.display_battlegroups(faction)
 	@fleet_bgs = Fleet.display_fleet_bgs(Fleet.find_fleet_bgs(@fleet_name))
 	erb :view_fleets
@@ -193,7 +200,7 @@ post '/fleets/overview' do
 	session[:fleet_name] = params[:fleet_name]
 	@fleet_name = session[:fleet_name]
 	@fleet_points = Fleet.find_fleet_points(@fleet_name)
-	@fleets = Fleet.overview_display(faction)
+	@current_points = Fleet.find_current_points(@fleet_name)
 	@battlegroups = Battlegroup.display_battlegroups(faction)
 	@fleet_bgs = Fleet.display_fleet_bgs(Fleet.find_fleet_bgs(@fleet_name))
 	erb :view_fleets
@@ -206,6 +213,7 @@ post '/fleets/delete/battlegroup' do
 	new_arr = Fleet.remove_bg_id(Fleet.convert_bg_ids(Fleet.retreive_battlegroups(fleet_name)), Battlegroup.find_bg_id(bg_name))
 	new_str = Fleet.bg_to_s(new_arr)
 	Fleet.update_battlegroups(fleet_name, new_str)
+	Fleet.update_current_points(fleet_name, Fleet.subtract_bg_points(fleet_name, bg_name))
 	redirect '/fleets/overview'
 end
 

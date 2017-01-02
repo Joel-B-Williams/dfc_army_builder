@@ -11,12 +11,12 @@
 <!-- Display fleet basics here -->
 	<table>
 		<thead>
-			<th colspan="2">Fleet</th>
-			<th colspan="2">Points</th>
+			<th colspan="3">Fleet</th>
+			<th colspan="3">Points</th>
 		</thead>
 		<tr>
-			<td colspan="2"><%=@fleet_name%></td>
-			<td colspan="2">xxxx/<%=@fleet_points%></td>
+			<td colspan="3"><%=@fleet_name%></td>
+			<td colspan="3"><%=@current_points%>/<%=@fleet_points%></td>
 		</tr>
 	<!-- Display Fleet BG's -->
 	<% @fleet_bgs.each do |bg| %>
@@ -30,17 +30,27 @@
 			<td colspan="2"><%=bg[0][0]%></td>
 			<td><%=bg[0][1]%></td>
 			<td><%=bg[0][2]%></td>
+			<td>
+			&nbsp;
+				<!-- view battlegroup button -->
+				<form action="/battlegroups/overview" method="POST">
+					<input type="hidden" name="bg_name" value="<%=bg[0][0]%>">
+					<input type="submit" value="View">
+				</form>
+			</td>
+			<td>
+			<section>
+				<form action="/fleets/delete/battlegroup" method="POST">
+					<input type="hidden" name="bg_name" value="<%=bg[0][0]%>">
+					<input type="submit" value="X">
+				</form>
+			</section>			
+			</td>
 		</tr>
-	</table>
-	<section>
 	<!-- /fleets/delete/battlegroup -->
-		<form action="/fleets/delete/battlegroup" method="POST">
-			<input type="hidden" name="bg_name" value="<%=bg[0][0]%>">
-			<input type="submit" value="Delete">
-		</form>
-	</section>
 		<%end%>
 	<%end%>
+	</table>
 	</section>
 	<section>
 <!-- Add battlegroup to existing fleet -->

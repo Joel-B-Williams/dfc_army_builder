@@ -12,6 +12,7 @@ class Fleet
 		@faction = faction
 		@points_limit = points_limit
 		@db = db
+		@current_points = 0
 		#push bg id into string, store in db, push to array later?
 		@battlegroups = ""
 	end
@@ -21,7 +22,7 @@ class Fleet
 
 # Overview of all saved battlegroups by faction
 	def self.overview_display(faction)
-		overview = 'SELECT name, points_limit FROM fleets WHERE faction = ?'
+		overview = 'SELECT name, points_limit, current_points FROM fleets WHERE faction = ?'
 		@@db.execute(overview, [faction])
 	end
 
@@ -30,6 +31,13 @@ class Fleet
 		find_points = 'SELECT points_limit FROM fleets WHERE name = ?'
 		points = @@db.execute(find_points, [fleet_name])[0][0]	
 	end
+
+# Find current points value of fleet by name
+	def self.find_current_points(fleet_name)
+		find_points = 'SELECT current_points FROM fleets WHERE name = ?'
+		points = @@db.execute(find_points, [fleet_name])
+	end
+
 # === ADD/DELETE BATTLEGROUP TO FLEET ===
 
 #Pull battlegroups from fleet table
@@ -77,6 +85,32 @@ class Fleet
 		@@db.execute(new_bgs, [battlegroup_string, fleet_name])
 	end
 
+# === ADD/SUBTRACT CURRENT POINTS TOTAL OF FLEET ===
+
+#Find current points by fleet name
+	def self.find_current_points(fleet_name)
+		find_points = 'SELECT current_points FROM fleets WHERE name = ?'
+		current_points = @@db.execute(find_points, [fleet_name])[0][0]
+	end
+
+#Add bg_points to current points
+	def self.add_bg_points(fleet_name, bg_name)
+		cp = self.find_current_points(fleet_name)
+		cp += Battlegroup.find_bg_points(bg_name)
+	end
+
+#Subtract bg_points from current points
+	def self.subtract_bg_points(fleet_name, bg_name)
+		cp = self.find_current_points(fleet_name)
+		cp -= Battlegroup.find_bg_points(bg_name)
+	end
+
+#Insert new current points value into fleets table by fleet name
+	def self.update_current_points(fleet_name, points)
+		update_points = 'UPDATE fleets SET current_points = ? WHERE name = ?'
+		@@db.execute(update_points, [points, fleet_name])
+	end
+
 # === DISPLAY BATTLEGROUPS IN FLEET ===
 
 #Convert bg_id string into an array
@@ -103,7 +137,7 @@ end
 # === SAVE FLEET TO FLEET TABLE ===
 
 	def save_fleet
-		save_fleet = 'INSERT INTO fleets (name, faction, points_limit, battlegroups) VALUES (?,?,?,"1.")'
+		save_fleet = 'INSERT INTO fleets (name, faction, points_limit, battlegroups, current_points) VALUES (?,?,?,"1.", 0)'
 		@db.execute(save_fleet, [@name, @faction, @points_limit])
 	end
 

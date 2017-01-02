@@ -61,7 +61,8 @@ module Tables
 		name TEXT,
 		faction TEXT,
 		points_limit INTEGER,
-		battlegroups TEXT
+		battlegroups TEXT,
+		current_points INTEGER
 		);'
 
 		db.execute_batch(create_tables)
