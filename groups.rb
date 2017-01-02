@@ -36,6 +36,12 @@ class Group
 		@@db.execute(delete_group, [group_name])
 	end
 
+	#Find ship name using group name
+	def self.find_ship_name(group_name)
+		find_ship = 'SELECT ships.name FROM ships JOIN groups ON ships.id = groups.ship_id WHERE groups.name = ?'
+		ship_name = @@db.execute(find_ship, [group_name])[0][0]
+	end
+
 # == UPDATE EXISTING GROUP TO GROUPS TABLE ==
 
 	#Update table using group name
@@ -79,9 +85,7 @@ class Group
 	def self.update_points(ship_name, group_name)
 		update_points = 'UPDATE groups SET points = ? WHERE name = ?'
 		@@db.execute(update_points, [self.calc_points(ship_name, group_name), group_name])
-	end
-
- # == NOTE - change requiring group name to searching for ID instead?  
+	end 
 
 # == FIND AND ADD ID OF SHIP TO GROUPS TABLE ==
 

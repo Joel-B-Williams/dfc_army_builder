@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ship Statistics</title>
+</head>
+<body>
+	<nav>
+		<a href="/">Home</a>
+		<a href="/groups/manage">Group Management</a>
+	</nav>
+	<section>
+	<table>
+		<thead>
+			<th colspan="6"><%=@ship[0]%></th>
+			<th colspan="3">Points: <%=@ship[10]%></th>
+		</thead>
+		<tr>
+			<td>Scan</td>
+			<td>Signature</td>
+			<td>Thrust</td>
+			<td>Hull</td>
+			<td>Armor</td>
+			<td>PD</td>
+			<td>G</td>
+			<td>T</td>
+			<td>Special</td>
+		</tr>
+		<tr>
+			<td><%=@ship[1]%></td>
+			<td><%=@ship[2]%></td>
+			<td><%=@ship[3]%></td>
+			<td><%=@ship[4]%></td>
+			<td><%=@ship[5]%></td>
+			<td><%=@ship[6]%></td>
+			<td><%=@ship[7]%></td>
+			<td><%=@ship[8]%></td>
+			<td><%=@ship[9]%></td>
+		</tr>
+	</table>
+	</section>
+</body>
+</html>

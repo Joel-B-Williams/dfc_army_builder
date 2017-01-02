@@ -43,6 +43,13 @@ get '/ships' do
 	erb :ships
 end
 
+# View single ship stats
+post '/ships/view' do
+	ship_name = params[:ship_name]
+	@ship = Ship.display_ship_stats(ship_name)
+	erb :view_ship
+end
+
 # Group Management Views
 get '/groups/manage' do
 	faction = session[:faction]
@@ -120,6 +127,9 @@ end
 post '/battlegroups/overview' do
 	bg_name = params[:bg_name]
 	@bg = Battlegroup.display_battlegroup(bg_name)
+	@ship1 = Ship.display_ship_stats(Group.find_ship_name(@bg[2])) 
+	@ship2 = Ship.display_ship_stats(Group.find_ship_name(@bg[3])) 
+	@ship3 = Ship.display_ship_stats(Group.find_ship_name(@bg[4])) 
 	erb :view_battlegroup
 end
 
