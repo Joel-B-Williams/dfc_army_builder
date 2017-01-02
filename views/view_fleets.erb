@@ -20,28 +20,28 @@
 		</tr>
 	<!-- Display Fleet BG's -->
 	<% @fleet_bgs.each do |bg| %>
-		<% if bg[0] != nil %>
+		<% if bg != nil %>
 				<!-- <tr>
 					<td>Name:</td>
 					<td>Type:</td>
 					<td>Points:</td>
 				</tr> -->
 		<tr>
-			<td colspan="2"><%=bg[0][0]%></td>
-			<td><%=bg[0][1]%></td>
-			<td><%=bg[0][2]%></td>
+			<td colspan="2"><%=bg[0]%></td>
+			<td><%=bg[1]%></td>
+			<td><%=bg[2]%></td>
 			<td>
 			&nbsp;
 				<!-- view battlegroup button -->
 				<form action="/battlegroups/overview" method="POST">
-					<input type="hidden" name="bg_name" value="<%=bg[0][0]%>">
+					<input type="hidden" name="bg_name" value="<%=bg[0]%>">
 					<input type="submit" value="View">
 				</form>
 			</td>
 			<td>
 			<section>
 				<form action="/fleets/delete/battlegroup" method="POST">
-					<input type="hidden" name="bg_name" value="<%=bg[0][0]%>">
+					<input type="hidden" name="bg_name" value="<%=bg[0]%>">
 					<input type="submit" value="X">
 				</form>
 			</section>			

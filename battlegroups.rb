@@ -34,7 +34,7 @@ class Battlegroup
 #Select one battlegroup by name & overview info
 	def self.display_by_name(bg_name)
 		display_battlegroup = 'SELECT battlegroups.name, battlegroup_types.name, battlegroups.points FROM battlegroups JOIN battlegroup_types ON battlegroups.type = battlegroup_types.id WHERE battlegroups.name = ?'
-		@@db.execute(display_battlegroup, [bg_name])
+		bg = @@db.execute(display_battlegroup, [bg_name])[0]
 	end
 
 #Find Battlegroup name from id
