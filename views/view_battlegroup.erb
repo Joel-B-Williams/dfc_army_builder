@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Battlegroup Overview</title>
+</head>
+<body>
+	<nav>
+		<a href="/">Home</a>
+		<a href="/fleets/overview">Return to Fleet Overview</a>
+	</nav>
+	<section>
+		<table>
+			<thead>
+				<th colspan="3"><%=@bg[0]%></th>
+				<th>Points: <%=@bg[5]%></th>
+			</thead>
+			<tr>
+				<td>Battlegroup Type:</td>
+				<td>Group 1</td>
+				<td>Group 2</td>
+				<td>Group 3</td>
+			</tr>
+			<tr>
+				<td><%=@bg[1]%></td>
+				<td><%=@bg[2]%></td>
+				<td><%=@bg[3]%></td>
+				<td><%=@bg[4]%></td>
+			</tr>
+		</table>
+	</section>
+</body>
+</html>

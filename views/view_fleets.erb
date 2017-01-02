@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Fleet Overview</title>
+</head>
+<body>
+	<nav>
+		<a href="/">Home</a>
+	</nav>
+	<section>
+<!-- Display fleet basics here -->
+	<table>
+		<thead>
+			<th colspan="3">Fleet</th>
+			<th colspan="3">Points</th>
+		</thead>
+		<tr>
+			<td colspan="3"><%=@fleet_name%></td>
+			<td colspan="3"><%=@current_points%>/<%=@fleet_points%></td>
+		</tr>
+	<!-- Display Fleet BG's -->
+	<% @fleet_bgs.each do |bg| %>
+		<% if bg != nil %>
+				<!-- <tr>
+					<td>Name:</td>
+					<td>Type:</td>
+					<td>Points:</td>
+				</tr> -->
+		<tr>
+			<td colspan="2"><%=bg[0]%></td>
+			<td><%=bg[1]%></td>
+			<td><%=bg[2]%></td>
+			<td>
+			&nbsp;
+				<!-- view battlegroup button -->
+				<form action="/battlegroups/overview" method="POST">
+					<input type="hidden" name="bg_name" value="<%=bg[0]%>">
+					<input type="submit" value="View">
+				</form>
+			</td>
+			<td>
+			<section>
+				<form action="/fleets/delete/battlegroup" method="POST">
+					<input type="hidden" name="bg_name" value="<%=bg[0]%>">
+					<input type="submit" value="X">
+				</form>
+			</section>			
+			</td>
+		</tr>
+	<!-- /fleets/delete/battlegroup -->
+		<%end%>
+	<%end%>
+	</table>
+	</section>
+	<section>
+<!-- Add battlegroup to existing fleet -->
+	<form action="/fleets/add/battlegroup" method="POST">
+		<select name="bg_name">
+			<option selected value="none">-Add New Battlegroup-</option>
+			<% @battlegroups.each do |battlegroup| %>
+			<option value="<%=battlegroup[0]%>"><%=battlegroup[0]%>: <%=battlegroup[1]%> -- <%=battlegroup[5]%> </option>
+			<% end %>
+		</select>
+		<input type="hidden" name="fleet_name" value="<%=@fleet_name%>">
+		<input type="submit" value="Add Battlegroup">
+	</form>
+	</section>
+</body>
+</html>

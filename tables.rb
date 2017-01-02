@@ -61,7 +61,8 @@ module Tables
 		name TEXT,
 		faction TEXT,
 		points_limit INTEGER,
-		battlegroups TEXT
+		battlegroups TEXT,
+		current_points INTEGER
 		);'
 
 		db.execute_batch(create_tables)
@@ -81,12 +82,17 @@ module Tables
 		db.execute(set_default)
 	end
 
+	def self.default_battlegroup(db)
+		set_default = 'INSERT INTO battlegroups (name, faction, group1_id, group2_id, group3_id, points) VALUES ("none", "none", 1, 1, 1, 0)'
+		db.execute(set_default)
+	end
+
 	def self.populate_battlegroup_types(db)
-		pathfinder = ["Pathfinder", "1-3", "0-1", nil, nil]
-		line = ["Line", "0-2", "1-3", nil, nil]
-		vanguard = ["Vanguard", "0-1", "0-1", "1-2", nil]
 		flag = ["Flag", "0-1", nil, nil, "1-2"]
-		battlegroups = [pathfinder, line, vanguard, flag]
+		vanguard = ["Vanguard", "0-1", "0-1", "1-2", nil]
+		line = ["Line", "0-2", "1-3", nil, nil]
+		pathfinder = ["Pathfinder", "1-3", "0-1", nil, nil]
+		battlegroups = [flag, vanguard, line, pathfinder]
 		add_battlegroup = 'INSERT INTO battlegroup_types (name, light, medium, heavy, super_heavy) VALUES (?,?,?,?,?)'
 		if db.execute('SELECT COUNT (*) FROM battlegroup_types')[0][0] == 0
 			battlegroups.each {|battlegroup| db.execute(add_battlegroup, [battlegroup[0], battlegroup[1], battlegroup[2], battlegroup[3], battlegroup[4]])}

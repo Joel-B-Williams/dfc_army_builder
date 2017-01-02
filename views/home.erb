@@ -9,29 +9,44 @@
 		<p>I need a button to build a new Fleet</p>
 		<p>Fleets need to be displayed</p>
 		<p>Fleets each need a button to delete them from DB</p>
-		<p>With luck I can display the chosen faction here -> <%=@faction%></p>
 	</section>
 	<nav>
 		<a href="/faction/choose">Select Faction</a>
 		<a href="/ships">View Faction Roster</a>
 		<a href="/groups/manage">Manage Groups</a>
 		<a href="/battlegroups/manage">Manage Battlegroups</a>
-		<a href="/fleets/manage">Build Fleet</a>
 	</nav>
 	<section>
+		<!-- create new fleet here -->
+		<form action="/fleets/add" method="POST">
+			<label>Create New Fleet</label>
+			<input type="text" name="fleet_name" placeholder="-Name Your Fleet-">
+			<input type="text" name="points_limit" placeholder="-Points Limit-">
+			<input type="submit" value="Create Fleet">
+		</form>
+	</section>
+	<section>
+	<!-- Display fleet basics here -->
 		<% @fleets.each do |fleet| %>
 		<table>
 			<thead>
-				<th>Fleet</th>
-				<th>Faction</th>
-				<th>Points</th>
+				<th colspan="2">Fleet</th>
+				<th colspan="2">Points</th>
 			</thead>
 			<tr>
-				<td><%=fleet[0]%></td>
-				<td><%=fleet[1]%></td>
-				<td><%=fleet[2]%></td>
+				<td colspan="2"><%=fleet[0]%></td>
+				<td colspan="2"><%=fleet[2]%>/<%=fleet[1]%></td>
 			</tr>
-		</table><br>
+		</table>
+		<!-- View/Update/Delete Fleets -->
+		<form action="/fleets/overview" method="POST">
+			<input type="hidden" name="fleet_name" value="<%=fleet[0]%>">
+			<input type="submit" value="View Fleet">
+		</form>
+		<form action="/fleets/delete" method="POST">
+			<input type="hidden" name="fleet_name" value="<%=fleet[0]%>">
+			<input type="submit" value="Delete">
+		</form>
 		<% end %>
 	</section>
 </body>

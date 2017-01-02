@@ -15,25 +15,14 @@ Tables.populate_group_sizes(db)
 Tables.populate_battlegroup_types(db)
 Roster.create_ships(Roster::FULL_ROSTER, db) if db.execute('SELECT COUNT (*) FROM ships')[0][0] == 0
 Tables.default_group(db) if db.execute('SELECT COUNT (*) FROM groups')[0][0] == 0
-# CURRENTLY WILL ADD TO TABLE EVERY TIME PROGRAM RUNS
+Tables.default_battlegroup(db) if db.execute('SELECT COUNT (*) FROM battlegroups')[0][0] == 0
 
-# # Conditional on choosing UCM as faction
-# ucm_ships = create_ships(Roster::UCM_ROSTER, db) if 
-
-# # Conditional on creating/saving groups
-# group = Group.new("Beazlebub", "Tokyo", 1, db)
-# group.save_group(db)
-# group = Group.new("Red Squadron", "Toulon", 4, db)
-# group.save_group(db)
-
-# battlegroup = Battlegroup.new("Omega", "Vanguard", "Beazlebub", "Red Squadron", "Red Squadron", db)
-# battlegroup.save_battlegroup(db)
 enable :sessions
 
 # Home View
 get '/' do
-	@fleets = Fleet.overview_display
-	@faction = session[:faction]
+	faction = session[:faction]
+	@fleets = Fleet.overview_display(faction)
 	erb :home
 end
 
@@ -116,7 +105,6 @@ post '/battlegroups/create' do
 	erb :create_battlegroup
 end
 
-
 post '/battlegroups/add' do
 	bg_name = params[:bg_name]
 	bg_type = session[:bg_type]
@@ -127,6 +115,12 @@ post '/battlegroups/add' do
 	battlegroup = Battlegroup.new(bg_name, faction, bg_type, group1, group2, group3, db)
 	battlegroup.save_battlegroup
 	redirect '/battlegroups/manage'
+end
+
+post '/battlegroups/overview' do
+	bg_name = params[:bg_name]
+	@bg = Battlegroup.display_battlegroup(bg_name)
+	erb :view_battlegroup
 end
 
 post '/battlegroups/update' do
@@ -169,7 +163,72 @@ post '/battlegroups/delete' do
 end
 
 # Fleet Management Views
-get '/fleets/manage' do
-	erb :manage_fleets
+
+post '/fleets/add' do
+	fleet_name = params[:fleet_name]
+	faction = session[:faction]
+	points_limit = params[:points_limit]
+	fleet = Fleet.new(fleet_name, faction, points_limit, db)
+	fleet.save_fleet
+	redirect '/'
 end
 
+post '/fleets/add/battlegroup' do
+	fleet_name = params[:fleet_name]
+	bg_name = params[:bg_name]
+	#bg_points = params[:]??? add to calc points as you go??
+	#Gross... break down & use variables for readability?
+	new_bg_id_arr = Fleet.add_bg_id(Fleet.retreive_battlegroups(fleet_name), Battlegroup.find_bg_id(bg_name))
+	new_bg_str = Fleet.bg_to_s(new_bg_id_arr)
+	Fleet.update_battlegroups(fleet_name, new_bg_str)
+	Fleet.update_current_points(fleet_name, Fleet.add_bg_points(fleet_name, bg_name))
+	redirect '/fleets/overview'
+end
+
+get '/fleets/overview' do
+	faction = session[:faction]
+	@fleet_name = session[:fleet_name]
+	@fleet_points = Fleet.find_fleet_points(@fleet_name)
+	@current_points = Fleet.find_current_points(@fleet_name)
+	@battlegroups = Battlegroup.display_battlegroups(faction)
+	@fleet_bgs = Fleet.display_fleet_bgs(Fleet.find_fleet_bgs(@fleet_name))
+	erb :view_fleets
+end
+
+post '/fleets/overview' do
+	faction = session[:faction]
+	session[:fleet_name] = params[:fleet_name]
+	@fleet_name = session[:fleet_name]
+	@fleet_points = Fleet.find_fleet_points(@fleet_name)
+	@current_points = Fleet.find_current_points(@fleet_name)
+	@battlegroups = Battlegroup.display_battlegroups(faction)
+	@fleet_bgs = Fleet.display_fleet_bgs(Fleet.find_fleet_bgs(@fleet_name))
+	erb :view_fleets
+end
+
+post '/fleets/delete/battlegroup' do
+	fleet_name = session[:fleet_name]
+	bg_name = params[:bg_name]
+	#refactor with variables
+	new_arr = Fleet.remove_bg_id(Fleet.convert_bg_ids(Fleet.retreive_battlegroups(fleet_name)), Battlegroup.find_bg_id(bg_name))
+	new_str = Fleet.bg_to_s(new_arr)
+	Fleet.update_battlegroups(fleet_name, new_str)
+	Fleet.update_current_points(fleet_name, Fleet.subtract_bg_points(fleet_name, bg_name))
+	redirect '/fleets/overview'
+end
+
+post '/fleets/delete' do
+	fleet_name = params[:fleet_name]
+	Fleet.delete_fleet(fleet_name)
+	redirect '/'
+end
+
+#------------------------------------#
+
+# post '/test' do
+# 	fleet_name = session[:fleet_name]
+# 	bg_name = params[:bg_name]
+# 	@new_arr = Fleet.remove_bg_id(Fleet.convert_bg_ids(Fleet.retreive_battlegroups(fleet_name)), Battlegroup.find_bg_id(bg_name))
+# 	@new_str = Fleet.bg_to_s(@new_arr)
+# 	erb :test
+# end
